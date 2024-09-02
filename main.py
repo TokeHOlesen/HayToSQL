@@ -59,7 +59,7 @@ def create_db_table(cursor):
         location TEXT,
         itemnumber TEXT,
         itemname TEXT,
-        itemcolor TEXT,
+        color TEXT,
         number INTEGER,
         loadmeter REAL,
         date TEXT,
@@ -78,9 +78,9 @@ def load_data_into_db(cursor, df):
     cursor.execute("DELETE FROM sqlite_sequence WHERE name='hay';")
     for i in range(df.shape[0]):
         cursor.execute(
-                        "INSERT INTO hay (ordernumber, pickseries, location, itemnumber, itemname, itemcolor, number,"
+                        "INSERT INTO hay (ordernumber, pickseries, location, itemnumber, itemname, color, number,"
                         "loadmeter, date, kid, custname, address, city, postcode, country) "
-                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
+                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, DATE(?), ?, ?, ?, ?, ?, ?);",
                         (
                             df.loc[i, "Hay KO-no."],
                             df.loc[i, "Plukserie (ordrelinje)"],
@@ -90,7 +90,7 @@ def load_data_into_db(cursor, df):
                             df.loc[i, "Description 2"],
                             int(df.loc[i, "Antal3"]),
                             df.loc[i, "Beregnet ladmeter"],
-                            str(df.loc[i, "Bekræftet leveringsdato"]),
+                            datetime.strptime(str(df.loc[i, "Bekræftet leveringsdato"]), "%Y-%m-%d %H:%M:%S").isoformat(),
                             df.loc[i, "Konsoliderings ID"],
                             df.loc[i, "Leveringsnavn"],
                             df.loc[i, "Leveringsadresse"],
