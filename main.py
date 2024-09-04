@@ -30,7 +30,7 @@ class Alldays:
     "SI": (3, ),
     "SK": (0, 3),
     "SM": (0, 2, 4),
-    "TR": (3, )    
+    "TR": (3, )
 }
     def __init__(self) -> None:
         self._days = []
@@ -43,6 +43,25 @@ class Alldays:
     
     def add_day(self, day):
         self._days.append(day)
+    
+    def move_lines_according_to_date(self):
+        """
+        If an orderline's date falls on a day on which orders to the orderline's country may not be shipped,
+        moves the orderline back to the nearest allowed date.
+        """
+        for day in self._days:
+            for country in day.countries:
+                weekday = target_weekday = day.weekday_number
+                if country in self.SHIPPING_DAYS:
+                    if weekday not in self.SHIPPING_DAYS[country]:
+                        while target_weekday not in self.SHIPPING_DAYS[country] and target_weekday > 0:
+                            target_weekday -= 1
+                        for orderline in day.orderlines:
+                            if target_weekday == 0 and target_weekday not in self.SHIPPING_DAYS[country]:
+                                orderline.message = "Forsinket"
+                            if orderline.country == country:
+                                self._days[target_weekday].add_line(orderline)
+                                day.remove_line(orderline)
 
 
 class Day:
@@ -53,12 +72,12 @@ class Day:
     @property    
     def orderlines(self):
         return self._orderlines
-
-    def get_line(self, index):
-        return self._orderlines[index]
     
     def add_line(self, orderline):
         self._orderlines.append(orderline)
+    
+    def remove_line(self, orderline):
+        self._orderlines.remove(orderline)
 
     @property
     def number_of_lines(self):
@@ -100,7 +119,9 @@ class Orderline:
         self.city,
         self.postcode,
         self.country) = sql_data
-
+    
+        self.message = ""
+    
 
 def main():
     # TODO: exceptions
@@ -139,15 +160,14 @@ def main():
         sys.exit("Fejl: databasefilen findes, men indeholder ikke en gyldig tabel.")
     
     load_data_into_db(cursor, df)
-        
-    # print(datetime.now().weekday())
     
     all_days = get_orders_for_week(cursor, '2024-09-09', '2024-09-13')
+    all_days.move_lines_according_to_date()
     
     for day in all_days:
         print("\n", day.date, day.weekday, "\n")
         for orderline in day.orderlines:
-            print(orderline.address)
+            print(orderline.country, orderline.date, orderline.address)
     
     cursor.close()
     connection.commit()
