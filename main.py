@@ -5,9 +5,11 @@ from datetime import datetime, timedelta, date
 from pathlib import Path
 
 SQL_DB_PATH = Path(r"C:\Users\Toke Henrik Olesen\Code\PalissadeDB\sqldb.db")
-EXCEL_FILE_PATH = Path(r"paltestr.xlsx")
+EXCEL_FILE_PATH = Path(r"paltest4.xlsx")
 
-SHIPPING_DAYS = {
+
+class Alldays:
+    SHIPPING_DAYS = {
     "BG": (0, ),
     "CH": (2, 4),
     "CZ": (0, 3),
@@ -30,6 +32,54 @@ SHIPPING_DAYS = {
     "SM": (0, 2, 4),
     "TR": (3, )    
 }
+    def __init__(self) -> None:
+        self._days = []
+        
+    def __iter__(self):
+        return iter(self._days)
+    
+    def get_day(self, index):
+        return self.days[index]
+    
+    def add_day(self, day):
+        self._days.append(day)
+
+
+class Day:
+    def __init__(self, date) -> None:
+        self._date = date
+        self._orderlines = []
+         
+    @property    
+    def orderlines(self):
+        return self._orderlines
+
+    def get_line(self, index):
+        return self._orderlines[index]
+    
+    def add_line(self, orderline):
+        self._orderlines.append(orderline)
+
+    @property
+    def number_of_lines(self):
+        return len(self._orderlines)
+    
+    @property
+    def date(self):
+        return self._date
+
+    @property
+    def weekday_number(self):
+        return self._date.weekday()
+    
+    @property
+    def weekday(self):
+        weekdays = ["Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag", "Søndag"]
+        return weekdays[self.weekday_number % 7]
+
+    @property
+    def countries(self):
+        return list({orderline.country for orderline in self.orderlines})
 
 
 class Orderline:
@@ -92,10 +142,12 @@ def main():
         
     # print(datetime.now().weekday())
     
-    monday_orders, tuesday_orders, wednesday_orders, thursday_orders, friday_orders = get_orders_for_week(cursor, '2024-09-09', '2024-09-13')
+    all_days = get_orders_for_week(cursor, '2024-09-09', '2024-09-13')
     
-    for order in friday_orders:
-        print(order.address)
+    for day in all_days:
+        print("\n", day.date, day.weekday, "\n")
+        for orderline in day.orderlines:
+            print(orderline.address)
     
     cursor.close()
     connection.commit()
@@ -153,7 +205,7 @@ def load_data_into_db(cursor, df):
                     )
 
 
-def get_orders_for_date(cursor, this_date):
+def get_orders_for_day(cursor, this_date):
     """
     Returns a list of Orderline objects for orders with the given shipping date.
     Includes orders with the same delivery address, even if they have a later shipping date, to make sure
@@ -161,24 +213,24 @@ def get_orders_for_date(cursor, this_date):
     """
     if not isinstance(this_date, date):
         this_date = datetime.strptime(date, r"%Y-%m-%d").date()
-    order_lines = []
+    day = Day(this_date)
     cursor.execute("""SELECT * FROM hay
                    WHERE address IN (SELECT address FROM hay GROUP BY address HAVING MIN(date) = ?)
                    AND location IS NOT 'DSV';""", (this_date,))
     result = cursor.fetchone()
     while result is not None:
-        order_lines.append(Orderline(result))
+        day.add_line(Orderline(result))
         result = cursor.fetchone()
-    return order_lines
+    return day
 
 
 def get_orders_for_week(cursor, start_date, end_date):
     start_date = datetime.strptime(start_date, r"%Y-%m-%d").date()
     end_date = datetime.strptime(end_date, r"%Y-%m-%d").date()
-    weekdays = []
+    all_days = Alldays()
     for i in range((end_date - start_date).days + 1):
-        weekdays.append(get_orders_for_date(cursor, (start_date + timedelta(days=i))))
-    return weekdays
+        all_days.add_day(get_orders_for_day(cursor, (start_date + timedelta(days=i))))
+    return all_days
     
  
 if __name__ == "__main__":
