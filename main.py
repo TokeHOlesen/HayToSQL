@@ -7,7 +7,6 @@ from pathlib import Path
 from OrderlineClass import Orderline
 from DayClass import Day
 from AlldaysClass import Alldays
-from SimulatedKidClass import SimulatedKid
 
 SQL_DB_PATH = Path(r"C:\Users\Toke Henrik Olesen\Code\PalissadeDB\sqldb.db")
 EXCEL_FILE_PATH = Path(r"palmod.xlsx")
@@ -55,6 +54,7 @@ def main():
     all_days.move_lines_to_match_date()
     all_days.calculate_kids_for_all_days()
     
+    """
     for day in all_days:
         print("\n", day.date, day.weekday, "\n")
         for orderline in day.orderlines:
@@ -63,6 +63,10 @@ def main():
     for day in all_days:
         for kid in day.kids:
             print(kid.address, kid.ordernumbers, kid.number, kid.ldm)
+    """
+    
+    for day in all_days:
+        print(day.get_day_report())
     
         
     cursor.close()
