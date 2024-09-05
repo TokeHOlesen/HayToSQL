@@ -5,7 +5,7 @@ from datetime import datetime, timedelta, date
 from pathlib import Path
 
 SQL_DB_PATH = Path(r"C:\Users\Toke Henrik Olesen\Code\PalissadeDB\sqldb.db")
-EXCEL_FILE_PATH = Path(r"paltest4.xlsx")
+EXCEL_FILE_PATH = Path(r"palmod.xlsx")
 
 
 class Alldays:
@@ -32,6 +32,7 @@ class Alldays:
     "SM": (0, 2, 4),
     "TR": (3, )
 }
+    
     def __init__(self) -> None:
         self._days = []
         
@@ -48,6 +49,8 @@ class Alldays:
         """
         If an orderline's date falls on a day on which orders to the orderline's country may not be shipped,
         moves the orderline back to the nearest allowed date.
+        If the orderline is moved all the way back to monday without reaching an allowed day, the orderline's
+        "message" property is set to "Forsinket" to mark is as delayed.
         """
         for day in self._days:
             for country in day.countries:
@@ -56,10 +59,10 @@ class Alldays:
                     if weekday not in self.SHIPPING_DAYS[country]:
                         while target_weekday not in self.SHIPPING_DAYS[country] and target_weekday > 0:
                             target_weekday -= 1
-                        for orderline in day.orderlines:
-                            if target_weekday == 0 and target_weekday not in self.SHIPPING_DAYS[country]:
-                                orderline.message = "Forsinket"
+                        for orderline in day.orderlines[:]:
                             if orderline.country == country:
+                                if target_weekday == 0 and target_weekday not in self.SHIPPING_DAYS[country]:
+                                    orderline.message = "Forsinket"
                                 self._days[target_weekday].add_line(orderline)
                                 day.remove_line(orderline)
 
@@ -167,7 +170,7 @@ def main():
     for day in all_days:
         print("\n", day.date, day.weekday, "\n")
         for orderline in day.orderlines:
-            print(orderline.country, orderline.date, orderline.address)
+            print(orderline.country, orderline.date, orderline.address, orderline.message)
     
     cursor.close()
     connection.commit()
