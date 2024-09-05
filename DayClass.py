@@ -50,6 +50,21 @@ class Day:
         for orderline in self.orderlines:
             total += orderline.number
         return total
+    
+    @property
+    def ldm_total(self):
+        total = 0
+        for orderline in self.orderlines:
+            total += orderline.loadmeter
+        return total
+    
+    @property
+    def all_ordernumbers(self):
+        ordernumbers = []
+        for kid in self.kids:
+            for ordernumber in kid.ordernumbers:
+                ordernumbers.append(ordernumber)
+        return ordernumbers
 
     @property
     def countries(self):
@@ -72,9 +87,18 @@ class Day:
         
         day_report += f"{self.weekday} d. {self.date}:\n\n"
         day_report += f"Varer i alt: {self.items_total}\n"
+        day_report += f"Ca. ldm i alt: {round(self.ldm_total, 2)}\n"
         day_report += f"Ordrer i alt: {self.orders_total}\n"
-        day_report += f"KIDer i alt: {len(self.kids)}\n"
-        day_report += f"Destinationer: {', '.join(self.countries)}."
+        day_report += f"KID'er i alt: {len(self.kids)}\n"
+        day_report += f"Destinationer: {', '.join(self.countries)}.\n"
+        day_report += f"Alle ordrenumre: {'|'.join(self.all_ordernumbers)}\n\n"
+        
+        
+        for i, kid in enumerate(self.kids):
+            day_report += f"KID nr. {i + 1}:\n"
+            day_report += f"{kid.custname}, {kid.city}, {kid.country}.\n"
+            day_report += f"{len(kid.ordernumbers)} {'ordre' if len(kid.ordernumbers) == 1 else 'ordrer'}, {kid.number} varer, ca. {kid.ldm} ldm.\n"
+            day_report += f"{'|'.join(kid.ordernumbers)}\n\n"
         
         return day_report
     
