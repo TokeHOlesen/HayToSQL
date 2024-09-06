@@ -1,6 +1,6 @@
 class Alldays:
     SHIPPING_DAYS = {
-    "BG": (0, ),
+    "BG": (2, ),
     "CH": (2, 4),
     "CZ": (0, 3),
     "EE": (0, 3),

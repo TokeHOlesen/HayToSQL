@@ -9,12 +9,6 @@ class Day:
     @property    
     def orderlines(self):
         return self._orderlines
-    
-    def add_line(self, orderline):
-        self._orderlines.append(orderline)
-    
-    def remove_line(self, orderline):
-        self._orderlines.remove(orderline)
 
     @property
     def number_of_lines(self):
@@ -74,6 +68,16 @@ class Day:
     def addresses(self):
         return list({orderline.address for orderline in self.orderlines})
     
+    @property
+    def dates(self):
+        return sorted(list({orderline.date for orderline in self.orderlines}))
+    
+    def add_line(self, orderline):
+        self._orderlines.append(orderline)
+    
+    def remove_line(self, orderline):
+        self._orderlines.remove(orderline)
+    
     def calculate_kids(self):
         for address in self.addresses:
             orderline_list = []
@@ -81,23 +85,26 @@ class Day:
                 if orderline.address == address:
                     orderline_list.append(orderline)
             self._kids.append(SimulatedKid(orderline_list))
+        self._kids.sort(key=lambda kid: kid.country)
     
     def get_day_report(self):
         day_report = ""
         
-        day_report += f"{self.weekday} d. {self.date}:\n\n"
+        day_report += f"{'#' * 22}\n{self.weekday} d. {self.date}:\n{'#' * 22}\n\n"
         day_report += f"Varer i alt: {self.items_total}\n"
         day_report += f"Ca. ldm i alt: {round(self.ldm_total, 2)}\n"
         day_report += f"Ordrer i alt: {self.orders_total}\n"
         day_report += f"KID'er i alt: {len(self.kids)}\n"
+        day_report += f"Ordrerne har følgende bekræftelsesdatoer: {', '.join(self.dates)}.\n"
         day_report += f"Destinationer: {', '.join(self.countries)}.\n"
         day_report += f"Alle ordrenumre: {'|'.join(self.all_ordernumbers)}\n\n"
         
         
         for i, kid in enumerate(self.kids):
-            day_report += f"KID nr. {i + 1}:\n"
+            day_report += f"{'*' * 5 } KID nr. {i + 1}: {'*' * 5}\n"
             day_report += f"{kid.custname}, {kid.city}, {kid.country}.\n"
-            day_report += f"{len(kid.ordernumbers)} {'ordre' if len(kid.ordernumbers) == 1 else 'ordrer'}, {kid.number} varer, ca. {kid.ldm} ldm.\n"
+            day_report += f"Ordrerne er bekræftet til d.: {', '.join(kid.dates)}.\n"
+            day_report += f"{len(kid.ordernumbers)} ordre{'r' if len(kid.ordernumbers) > 1 else ''}, {kid.number} vare{'r' if kid.number > 1 else ''}, ca. {round(kid.ldm, 2)} ldm.\n"
             day_report += f"{'|'.join(kid.ordernumbers)}\n\n"
         
         return day_report

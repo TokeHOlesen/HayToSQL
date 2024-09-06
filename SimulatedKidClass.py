@@ -7,13 +7,16 @@ class SimulatedKid:
         self.city = orderline_list[0].city
         self.postcode = orderline_list[0].postcode
         self.country = orderline_list[0].country
+        
+        self.dates = set()
         self.ordernumbers = set()
         self.number = 0
         self.ldm = 0
         for orderline in orderline_list:
+            self.dates.add(orderline.date)
             self.ordernumbers.add(orderline.ordernumber)
             self.number += orderline.number
             self.ldm += orderline.loadmeter
-    
-    def generate_report(self):
-        return f"Number: {self.number}, {self.ldm}"
+        self.dates = list(self.dates)
+        self.dates.sort()
+        

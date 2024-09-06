@@ -9,7 +9,7 @@ from DayClass import Day
 from AlldaysClass import Alldays
 
 SQL_DB_PATH = Path(r"C:\Users\Toke Henrik Olesen\Code\PalissadeDB\sqldb.db")
-EXCEL_FILE_PATH = Path(r"palmod.xlsx")
+EXCEL_FILE_PATH = Path(r"palcur.xlsx")
 
 
 def main():
@@ -54,19 +54,9 @@ def main():
     all_days.move_lines_to_match_date()
     all_days.calculate_kids_for_all_days()
     
-    """
-    for day in all_days:
-        print("\n", day.date, day.weekday, "\n")
-        for orderline in day.orderlines:
-            print(orderline.ordernumber, orderline.country, orderline.date, orderline.address, orderline.message)
-    
-    for day in all_days:
-        for kid in day.kids:
-            print(kid.address, kid.ordernumbers, kid.number, kid.ldm)
-    """
-    
-    for day in all_days:
-        print(day.get_day_report())
+    with open("report.txt", "w",encoding="UTF-8-sig") as outfile:
+        for day in all_days:
+            outfile.write(day.get_day_report())
     
         
     cursor.close()
