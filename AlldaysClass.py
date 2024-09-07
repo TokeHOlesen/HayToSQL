@@ -35,6 +35,20 @@ class Alldays:
     def add_day(self, day):
         self._days.append(day)
     
+    @property
+    def number_of_orders(self):
+        total = 0
+        for day in self._days:
+            total += day.orders_total
+        return total
+    
+    @property
+    def ldm_total(self):
+        total = 0
+        for day in self._days:
+            total += day.ldm_total
+        return round(total, 2)
+    
     def calculate_kids_for_all_days(self):
         for day in self._days:
             day.calculate_kids()
@@ -59,3 +73,16 @@ class Alldays:
                                     orderline.message = "Forsinket"
                                 self._days[target_weekday].add_line(orderline)
                                 day.remove_line(orderline)
+    
+    
+    def generate_weekly_report(self):
+        weekly_report = ""
+        
+        weekly_report += f"Ugerapport for perioden {self._days[0].date} - {self._days[len(self._days) - 1].date}.\n"
+        weekly_report += f"Ordrer i alt: {self.number_of_orders}.\n"
+        weekly_report += f"LDM i alt: {self.ldm_total}\n\n"
+        
+        
+        for day in self._days:
+            weekly_report += day.get_day_report()
+        return weekly_report

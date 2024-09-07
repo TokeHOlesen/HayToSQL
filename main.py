@@ -8,7 +8,8 @@ from OrderlineClass import Orderline
 from DayClass import Day
 from AlldaysClass import Alldays
 
-SQL_DB_PATH = Path(r"C:\Users\Toke Henrik Olesen\Code\PalissadeDB\sqldb.db")
+# SQL_DB_PATH = Path(r"C:\Users\Toke Henrik Olesen\Code\PalissadeDB\sqldb.db")
+SQL_DB_PATH = Path(r"sqldb.db")
 EXCEL_FILE_PATH = Path(r"palcur.xlsx")
 
 
@@ -54,11 +55,11 @@ def main():
     all_days.move_lines_to_match_date()
     all_days.calculate_kids_for_all_days()
     
-    with open("report.txt", "w",encoding="UTF-8-sig") as outfile:
-        for day in all_days:
-            outfile.write(day.get_day_report())
+    weekly_report = all_days.generate_weekly_report()
     
-        
+    with open("report.txt", "w",encoding="UTF-8-sig") as outfile:
+        outfile.write(weekly_report)
+    
     cursor.close()
     connection.commit()
     connection.close()
