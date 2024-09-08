@@ -5,6 +5,7 @@ from datetime import datetime
 from pathlib import Path
 
 from WeekClass import Week
+from ReportClass import Report
 
 # SQL_DB_PATH = Path(r"C:\Users\Toke Henrik Olesen\Code\PalissadeDB\sqldb.db")
 SQL_DB_PATH = Path(r"sqldb.db")
@@ -56,8 +57,9 @@ def main():
     
     weekly_report = week.generate_report()
     
-    with open("report.txt", "w", encoding="UTF-8-sig") as outfile:
+    with open("report.html", "w") as outfile:
         outfile.write(weekly_report)
+        outfile.write(Report.generate_html_head())
     
     cursor.close()
     connection.commit()

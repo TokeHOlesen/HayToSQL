@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 
 from DayClass import Day
 from OrderlineClass import Orderline
+from ReportClass import Report
 
 
 class Week:
@@ -31,22 +32,22 @@ class Week:
 
     def __init__(self, cursor, start_date, end_date) -> None:
         self._days = []
-        start_date = datetime.strptime(start_date, r"%Y-%m-%d").date()
-        end_date = datetime.strptime(end_date, r"%Y-%m-%d").date()
-        for i in range((end_date - start_date).days + 1):
-            day_date = (start_date + timedelta(days=i))
+        self.start_date = datetime.strptime(start_date, r"%Y-%m-%d").date()
+        self.end_date = datetime.strptime(end_date, r"%Y-%m-%d").date()
+        for i in range((self.end_date - self.start_date).days + 1):
+            day_date = (self.start_date + timedelta(days=i))
             day = Day(day_date)
             cursor.execute("""SELECT * FROM hay
                                    WHERE address IN
-                                   (SELECT address FROM hay GROUP BY address HAVING MIN(date) = ? AND MAX(date) <= ?)
-                                   AND location IS NOT 'DSV';""", (day_date, end_date))
+                                   (SELECT address FROM hay GROUP BY address HAVING MIN(date) = ?)
+                                   AND location IS NOT 'DSV';""", (day_date,))
             result = cursor.fetchone()
             while result is not None:
                 day.add_line(Orderline(result))
                 result = cursor.fetchone()
             self.add_day(day)
-        self.calculate_kids_for_all_days()
         self.move_lines_to_match_date()
+        self.calculate_kids_for_all_days()
 
     def __iter__(self):
         return iter(self._days)
@@ -94,12 +95,25 @@ class Week:
                                 day.remove_line(orderline)
 
     def generate_report(self):
-        weekly_report = ""
-
-        weekly_report += f"Ugerapport for perioden {self._days[0].date} - {self._days[len(self._days) - 1].date}.\n"
-        weekly_report += f"Ordrer i alt: {self.number_of_orders}.\n"
-        weekly_report += f"LDM i alt: {self.ldm_total}\n\n"
+        weekly_report = Report.generate_html_head()
+        weekly_report += Report.generate_header(self.start_date, self.end_date)
+        weekly_report += Report.generate_week_summary(self.number_of_orders,
+                                                      self.ldm_total)
 
         for day in self._days:
             weekly_report += day.get_day_report()
+
+        weekly_report += Report.generate_html_tail()
+
         return weekly_report
+
+    # def generate_report(self):
+    #     weekly_report = ""
+    #
+    #     weekly_report += f"Ugerapport for perioden {self._days[0].date} - {self._days[len(self._days) - 1].date}.\n"
+    #     weekly_report += f"Ordrer i alt: {self.number_of_orders}.\n"
+    #     weekly_report += f"LDM i alt: {self.ldm_total}\n\n"
+    #
+    #     for day in self._days:
+    #         weekly_report += day.get_day_report()
+    #     return weekly_report
