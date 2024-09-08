@@ -10,27 +10,27 @@ from AlldaysClass import Alldays
 
 # SQL_DB_PATH = Path(r"C:\Users\Toke Henrik Olesen\Code\PalissadeDB\sqldb.db")
 SQL_DB_PATH = Path(r"sqldb.db")
-EXCEL_FILE_PATH = Path(r"palcur.xlsx")
+EXCEL_FILE_PATH = Path(r"palnexttwo.xlsx")
 
 
 def main():
     # TODO: exceptions
+    # noinspection PyTypeChecker
     df = pd.read_excel(EXCEL_FILE_PATH, usecols=[
-    "Plukserie (ordrelinje)",
-    "Varenummer",
-    "Beskrivelse",
-    "Antal3",
-    "Beregnet ladmeter",
-    "Bekræftet leveringsdato",
-    "Leveringsnavn",
-    "Leveringsadresse",
-    "Leveringsby",
-    "Leveringspostnr.",
-    "Leveringsland",
-    "Description 2",
-    "Hay KO-no.",
-    "Hay Lokation",
-    "Konsoliderings ID"
+        "Plukserie (ordrelinje)",
+        "Varenummer", "Beskrivelse",
+        "Antal3",
+        "Beregnet ladmeter",
+        "Bekræftet leveringsdato",
+        "Leveringsnavn",
+        "Leveringsadresse",
+        "Leveringsby",
+        "Leveringspostnr.",
+        "Leveringsland",
+        "Description 2",
+        "Hay KO-no.",
+        "Hay Lokation",
+        "Konsoliderings ID"
     ])
     
     if not SQL_DB_PATH.is_file():
@@ -57,7 +57,7 @@ def main():
     
     weekly_report = all_days.generate_weekly_report()
     
-    with open("report.txt", "w",encoding="UTF-8-sig") as outfile:
+    with open("report.txt", "w", encoding="UTF-8-sig") as outfile:
         outfile.write(weekly_report)
     
     cursor.close()
@@ -105,7 +105,8 @@ def load_data_into_db(cursor, df):
                             df.loc[i, "Description 2"],
                             int(df.loc[i, "Antal3"]),
                             df.loc[i, "Beregnet ladmeter"],
-                            datetime.strptime(str(df.loc[i, "Bekræftet leveringsdato"]), "%Y-%m-%d %H:%M:%S").isoformat(),
+                            datetime.strptime(str(df.loc[i, "Bekræftet leveringsdato"]),
+                                              "%Y-%m-%d %H:%M:%S").isoformat(),
                             df.loc[i, "Konsoliderings ID"],
                             df.loc[i, "Leveringsnavn"],
                             df.loc[i, "Leveringsadresse"],
@@ -122,8 +123,6 @@ def get_orders_for_day(cursor, this_date):
     Includes orders with the same delivery address, even if they have a later shipping date, to make sure
     that orders get grouped together for delivery as much as possible.
     """
-    if not isinstance(this_date, date):
-        this_date = datetime.strptime(date, r"%Y-%m-%d").date()
     day = Day(this_date)
     cursor.execute("""SELECT * FROM hay
                    WHERE address IN (SELECT address FROM hay GROUP BY address HAVING MIN(date) = ?)
@@ -146,5 +145,3 @@ def get_orders_for_week(cursor, start_date, end_date):
  
 if __name__ == "__main__":
     main()
-
-# 

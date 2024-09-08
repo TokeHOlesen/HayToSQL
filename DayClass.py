@@ -1,5 +1,6 @@
 from SimulatedKidClass import SimulatedKid
 
+
 class Day:
     def __init__(self, date) -> None:
         self._date = date
@@ -9,10 +10,6 @@ class Day:
     @property    
     def orderlines(self):
         return self._orderlines
-
-    @property
-    def number_of_lines(self):
-        return len(self._orderlines)
     
     @property
     def date(self):
@@ -98,13 +95,13 @@ class Day:
         day_report += f"Ordrerne har følgende bekræftelsesdatoer: {', '.join(self.dates)}.\n"
         day_report += f"Destinationer: {', '.join(self.countries)}.\n"
         day_report += f"Alle ordrenumre: {'|'.join(self.all_ordernumbers)}\n\n"
-        
-        
+
         for i, kid in enumerate(self.kids):
-            day_report += f"{'*' * 5 } KID nr. {i + 1}: {'*' * 5}\n"
+            day_report += f"{'*' * 5} KID nr. {i + 1}: {'*' * 5}\n"
             day_report += f"{kid.custname}, {kid.city}, {kid.country}.\n"
             day_report += f"Ordrerne er bekræftet til d.: {', '.join(kid.dates)}.\n"
-            day_report += f"{len(kid.ordernumbers)} ordre{'r' if len(kid.ordernumbers) > 1 else ''}, {kid.number} vare{'r' if kid.number > 1 else ''}, ca. {round(kid.ldm, 2)} ldm.\n"
+            day_report += (f"{len(kid.ordernumbers)} ordre{'r' if len(kid.ordernumbers) > 1 else ''}, "
+                           f"{kid.number} vare{'r' if kid.number > 1 else ''}, ca. {round(kid.ldm, 2)} ldm.\n")
             day_report += f"{'|'.join(kid.ordernumbers)}\n\n"
         
         return day_report
