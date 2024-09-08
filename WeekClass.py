@@ -41,13 +41,20 @@ class Week:
                                    WHERE address IN
                                    (SELECT address FROM hay GROUP BY address HAVING MIN(date) = ?)
                                    AND location IS NOT 'DSV';""", (day_date,))
-            result = cursor.fetchone()
-            while result is not None:
-                day.add_line(Orderline(result))
-                result = cursor.fetchone()
+            day_data_line = cursor.fetchone()
+            while day_data_line is not None:
+                day.add_line(Orderline(day_data_line))
+                day_data_line = cursor.fetchone()
             self.add_day(day)
         self.move_lines_to_match_date()
         self.calculate_kids_for_all_days()
+
+        self.dsv_orderlines = []
+        cursor.execute("""SELECT * FROM hay WHERE location IS 'DSV';""")
+        dsv_data_line = cursor.fetchone()
+        while dsv_data_line is not None:
+            self.dsv_orderlines.append(Orderline(dsv_data_line))
+            dsv_data_line = cursor.fetchone()
 
     def __iter__(self):
         return iter(self._days)
@@ -63,11 +70,39 @@ class Week:
         return total
 
     @property
+    def number_of_items(self):
+        total = 0
+        for day in self._days:
+            total += day.items_total
+        return total
+
+    @property
+    def number_of_dsv_items(self):
+        total = 0
+        for dsv_orderline in self.dsv_orderlines:
+            total += dsv_orderline.number_of_items
+        return total
+
+    @property
     def ldm_total(self):
         total = 0
         for day in self._days:
             total += day.ldm_total
         return round(total, 2)
+
+    @property
+    def dsv_ldm_total(self):
+        total = 0
+        for orderline in self.dsv_orderlines:
+            total += orderline.loadmeter
+        return round(total, 2)
+
+    @property
+    def kids_total(self):
+        total = 0
+        for day in self._days:
+            total += day.kids_total
+        return total
 
     def calculate_kids_for_all_days(self):
         for day in self._days:
@@ -90,15 +125,19 @@ class Week:
                         for orderline in day.orderlines[:]:
                             if orderline.country == country:
                                 if target_weekday == 0 and target_weekday not in self.SHIPPING_DAYS[country]:
-                                    orderline.message = "Forsinket"
+                                    orderline.flags = orderline.flags & 0b0001  # Sets the first bit to mark as delayed
                                 self._days[target_weekday].add_line(orderline)
                                 day.remove_line(orderline)
 
     def generate_report(self):
         weekly_report = Report.generate_html_head()
         weekly_report += Report.generate_header(self.start_date, self.end_date)
-        weekly_report += Report.generate_week_summary(self.number_of_orders,
-                                                      self.ldm_total)
+        weekly_report += Report.generate_week_summary(self.number_of_items,
+                                                      self.number_of_dsv_items,
+                                                      self.number_of_orders,
+                                                      self.ldm_total,
+                                                      self.dsv_ldm_total,
+                                                      self.kids_total)
 
         for day in self._days:
             weekly_report += day.get_day_report()
@@ -106,14 +145,3 @@ class Week:
         weekly_report += Report.generate_html_tail()
 
         return weekly_report
-
-    # def generate_report(self):
-    #     weekly_report = ""
-    #
-    #     weekly_report += f"Ugerapport for perioden {self._days[0].date} - {self._days[len(self._days) - 1].date}.\n"
-    #     weekly_report += f"Ordrer i alt: {self.number_of_orders}.\n"
-    #     weekly_report += f"LDM i alt: {self.ldm_total}\n\n"
-    #
-    #     for day in self._days:
-    #         weekly_report += day.get_day_report()
-    #     return weekly_report

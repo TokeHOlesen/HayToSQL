@@ -10,12 +10,12 @@ class SimulatedKid:
         
         self.dates = set()
         self.ordernumbers = set()
-        self.number = 0
+        self.number_of_items = 0
         self.ldm = 0
         for orderline in orderline_list:
             self.dates.add(orderline.date)
             self.ordernumbers.add(orderline.ordernumber)
-            self.number += orderline.number
+            self.number_of_items += orderline.number_of_items
             self.ldm += orderline.loadmeter
         self.dates = list(self.dates)
         self.dates.sort()

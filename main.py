@@ -59,7 +59,6 @@ def main():
     
     with open("report.html", "w") as outfile:
         outfile.write(weekly_report)
-        outfile.write(Report.generate_html_head())
     
     cursor.close()
     connection.commit()

@@ -7,7 +7,7 @@ class Orderline:
          self.itemnumber,
          self.itemname,
          self.color,
-         self.number,
+         self.number_of_items,
          self.loadmeter,
          self.date,
          self.kid,
@@ -16,5 +16,8 @@ class Orderline:
          self.city,
          self.postcode,
          self.country) = sql_data
-
-        self.message = ""
+        # Flags:
+        # 1: Order delayed
+        # 2: Large order
+        # 3: Hay-Direct order
+        self.flags = 0b0000

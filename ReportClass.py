@@ -77,11 +77,15 @@ class Report:
         """)
 
     @staticmethod
-    def generate_week_summary(orders_total, ldm_total):
+    def generate_week_summary(normal_items_total, dsv_items_total, orders_total, ldm_total, dsv_ldm_total, kids_total):
         return (f"""
         <div class="week-summary">
-            <h3>Ordrer i alt: {orders_total}.</h3>
-            <h3>Lademeter i alt: {ldm_total} ldm.</h3>
+            <h3>Varer i alt: {normal_items_total + dsv_items_total} stk (almindelige ordrer: {normal_items_total} stk, DSV ordrer: {dsv_items_total} stk).</h3>
+            <h3>Ca. lademeter i alt: {ldm_total + dsv_ldm_total} ldm (almindelige ordrer: {ldm_total} ldm, DSV ordrer: {dsv_ldm_total} ldm).</h3>
+            <h3>Almindelige ordrer i alt: {orders_total}.</h3>
+            <h3>Konsoliderede ordregrupper i alt (almindelige ordrer): {kids_total}.</h3>
+            
+            
         </div>
         """)
 
@@ -99,9 +103,10 @@ class Report:
         <div class="day">
             <h2>{weekday} d. {date}</h2>
             <p>Varer i alt: {items_total}.</p>
-            <p>Ca. ldm i alt: {round(ldm_total, 2)}.</p>
+            <p>Ca. ldm i alt: {round(ldm_total, 2)} ldm.</p>
             <p>Ordrer i alt: {orders_total}.</p>
-            <p>KID'er i alt: {kids_total}.</p>
+            <p>Konsoliderede ordregrupper i alt: {kids_total}.</p>
+            <p>Varer per KID i gennemsnit: {round(items_total / kids_total, 1)}.</p>
             <p>Ordrene har følgende bekræftelsesdatoer: {', '.join(dates)}.</p>
             <p>Destinationer: {', '.join(destinations)}.</p>
             <p style="line-height: 1.2">{'|&#8203;'.join(order_list)}</p>
@@ -127,7 +132,7 @@ class Report:
         vare_msg = "vare" if items_total == 1 else "varer"
         return (f"""
             <div class="kid">
-                <h3>KID nr. {kid_number}:</h3>
+                <h3>Konsolideret ordregruppe nr. {kid_number}:</h3>
                 <p>{custname}, {city}, {country}.</p>
                 <p>{orders_total} {ordre_msg}, {items_total} {vare_msg}, ca. {round(ldm_total, 2)} ldm.</p>
                 <p>{ordre_dato_msg} er bekræftet til d.: {', '.join(confirmed_dates)}.</p>
