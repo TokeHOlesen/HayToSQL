@@ -1,0 +1,520 @@
+﻿Ugerapport for perioden 2024-09-09 - 2024-09-13.
+Ordrer i alt: 143.
+LDM i alt: 59.8
+
+######################
+Mandag d. 2024-09-09:
+######################
+
+Varer i alt: 88
+Ca. ldm i alt: 5.51
+Ordrer i alt: 13
+KID'er i alt: 8
+Ordrerne har følgende bekræftelsesdatoer: 2024-09-09, 2024-09-10, 2024-09-11, 2024-09-12, 2024-09-13.
+Destinationer: DE, DK, ES, FR, SE.
+Alle ordrenumre: PO10146430|PO10146121|PO10150409|PO10150660|PO10150140|PO10147253|PO10150198|PO10148083|PO10150147|PO10149654|PO10150410|PO10144409|PO10148071
+
+***** KID nr. 1: *****
+Living Edition GmbH, Saarbrücken, DE.
+Ordrerne er bekræftet til d.: 2024-09-09.
+1 ordre, 1 vare, ca. 0.28 ldm.
+PO10146430
+
+***** KID nr. 2: *****
+Lager vitrapoint citizenoffice, Düsseldorf, DE.
+Ordrerne er bekræftet til d.: 2024-09-09.
+1 ordre, 2 varer, ca. 0.09 ldm.
+PO10146121
+
+***** KID nr. 3: *****
+TrendyLiving A/S, Hornslet, DK.
+Ordrerne er bekræftet til d.: 2024-09-09, 2024-09-10, 2024-09-11, 2024-09-12, 2024-09-13.
+6 ordrer, 37 varer, ca. 2.24 ldm.
+PO10150409|PO10150660|PO10150140|PO10147253|PO10150198|PO10148083
+
+***** KID nr. 4: *****
+Vines Erhvervsmøbler A/S, Skive, DK.
+Ordrerne er bekræftet til d.: 2024-09-09.
+1 ordre, 15 varer, ca. 1.16 ldm.
+PO10150147
+
+***** KID nr. 5: *****
+TOC TOC SCP, Amposta, ES.
+Ordrerne er bekræftet til d.: 2024-09-09.
+1 ordre, 18 varer, ca. 0.86 ldm.
+PO10149654
+
+***** KID nr. 6: *****
+Magasin ENTOURAGE, Viviers-Du-Lac, FR.
+Ordrerne er bekræftet til d.: 2024-09-11.
+1 ordre, 1 vare, ca. 0.28 ldm.
+PO10150410
+
+***** KID nr. 7: *****
+SeLo AB, Nättraby, SE.
+Ordrerne er bekræftet til d.: 2024-09-09.
+1 ordre, 12 varer, ca. 0.53 ldm.
+PO10144409
+
+***** KID nr. 8: *****
+Future Mobility, Haninge, SE.
+Ordrerne er bekræftet til d.: 2024-09-09.
+1 ordre, 2 varer, ca. 0.09 ldm.
+PO10148071
+
+######################
+Tirsdag d. 2024-09-10:
+######################
+
+Varer i alt: 168
+Ca. ldm i alt: 15.04
+Ordrer i alt: 20
+KID'er i alt: 9
+Ordrerne har følgende bekræftelsesdatoer: 2024-09-10, 2024-09-11, 2024-09-12, 2024-09-13.
+Destinationer: DE, DK, SE.
+Alle ordrenumre: PO10143407|PO10146906|PO10150799|PO10150395|PO10150278|PO10146917|PO10149284|PO10150254|PO10145318|PO10147790|PO10150643|PO10144429|PO10144779|PO10150461|PO10143294|PO10150326|PO10150730|PO10147068|PO10149853|PO10150253
+
+***** KID nr. 1: *****
+Motion Team, Hamburg, DE.
+Ordrerne er bekræftet til d.: 2024-09-10.
+1 ordre, 2 varer, ca. 0.09 ldm.
+PO10143407
+
+***** KID nr. 2: *****
+TrendyLiving A/S, Rønde, DK.
+Ordrerne er bekræftet til d.: 2024-09-10, 2024-09-11, 2024-09-13.
+3 ordrer, 9 varer, ca. 0.18 ldm.
+PO10146906|PO10150799|PO10150395
+
+***** KID nr. 3: *****
+Idemøbler Max Jessen A/S, Terndrup, DK.
+Ordrerne er bekræftet til d.: 2024-09-10.
+1 ordre, 4 varer, ca. 0.47 ldm.
+PO10150278
+
+***** KID nr. 4: *****
+HolmrisB8 Solrød, Solrød Strand, DK.
+Ordrerne er bekræftet til d.: 2024-09-10.
+1 ordre, 1 vare, ca. 0.04 ldm.
+PO10146917
+
+***** KID nr. 5: *****
+Riis Retail A/S Warehouse 11, Kolding, DK.
+Ordrerne er bekræftet til d.: 2024-09-10, 2024-09-12.
+2 ordrer, 13 varer, ca. 0.6 ldm.
+PO10149284|PO10150254
+
+***** KID nr. 6: *****
+Byflou.com ApS, Hobro, DK.
+Ordrerne er bekræftet til d.: 2024-09-10, 2024-09-11, 2024-09-12.
+6 ordrer, 26 varer, ca. 2.26 ldm.
+PO10145318|PO10147790|PO10150643|PO10144429|PO10144779|PO10150461
+
+***** KID nr. 7: *****
+Jacobsen Møbler Aabenraa ApS, Rødekro, DK.
+Ordrerne er bekræftet til d.: 2024-09-10, 2024-09-11, 2024-09-13.
+4 ordrer, 102 varer, ca. 10.15 ldm.
+PO10143294|PO10150326|PO10150730|PO10147068
+
+***** KID nr. 8: *****
+Input Interiör Lager, Mölndal, SE.
+Ordrerne er bekræftet til d.: 2024-09-10.
+1 ordre, 7 varer, ca. 0.63 ldm.
+PO10149853
+
+***** KID nr. 9: *****
+Visby Inredningsbyrå, Visby, SE.
+Ordrerne er bekræftet til d.: 2024-09-10.
+1 ordre, 4 varer, ca. 0.62 ldm.
+PO10150253
+
+######################
+Onsdag d. 2024-09-11:
+######################
+
+Varer i alt: 282
+Ca. ldm i alt: 21.05
+Ordrer i alt: 56
+KID'er i alt: 29
+Ordrerne har følgende bekræftelsesdatoer: 2024-09-11, 2024-09-12, 2024-09-13.
+Destinationer: AT, BE, DE, DK, FI, NL, SE.
+Alle ordrenumre: PO10149696|PO10146258|PO10150390|PO10150096|PO10150161|PO10148990|PO10150295|PO10147098|PO10147141|PO10146204|PO10150193|PO10150128|PO10145712|PO10149401|PO10146588|PO10150680|PO10146402|PO10149317|PO10145710|PO10147888|PO10150663|PO10143559|PO10143503|PO10147255|PO10150387|PO10149684|PO10150111|PO10143268|PO10144576|PO10148013|PO10145498|PO10150459|PO10150148|PO10150355|PO10149009|PO10150523|PO10150412|PO10150280|PO10150538|PO10150351|PO10149037|PO10149297|PO10146192|PO10150464|PO10150452|PO10150458|PO10145762|PO10146445|PO10148152|PO10150584|PO10149717|PO10150392|PO10147003|PO10143192|PO10149589|PO10143984
+
+***** KID nr. 1: *****
+Andreas Wunder Lager, Wimpassing An Der Leitha, AT.
+Ordrerne er bekræftet til d.: 2024-09-11.
+1 ordre, 1 vare, ca. 0.02 ldm.
+PO10149696
+
+***** KID nr. 2: *****
+CASA Möbel GmbH, Hohenems, AT.
+Ordrerne er bekræftet til d.: 2024-09-11.
+1 ordre, 2 varer, ca. 0.09 ldm.
+PO10146258
+
+***** KID nr. 3: *****
+Master Meubel NV, Turnhout, BE.
+Ordrerne er bekræftet til d.: 2024-09-11.
+1 ordre, 1 vare, ca. 0.1 ldm.
+PO10150390
+
+***** KID nr. 4: *****
+Goûts et couleurs, Brugge, BE.
+Ordrerne er bekræftet til d.: 2024-09-11.
+1 ordre, 1 vare, ca. 0.28 ldm.
+PO10150096
+
+***** KID nr. 5: *****
+A Propos NV, Lochristi, BE.
+Ordrerne er bekræftet til d.: 2024-09-11.
+1 ordre, 1 vare, ca. 0.01 ldm.
+PO10150161
+
+***** KID nr. 6: *****
+Livingdesign BV, Drongen, BE.
+Ordrerne er bekræftet til d.: 2024-09-11.
+1 ordre, 1 vare, ca. 0.02 ldm.
+PO10148990
+
+***** KID nr. 7: *****
+Ruhrprojekt Planen + Einrichten GmbH & Co. KG, Bochum, DE.
+Ordrerne er bekræftet til d.: 2024-09-11.
+1 ordre, 6 varer, ca. 0.97 ldm.
+PO10150295
+
+***** KID nr. 8: *****
+Designfunktion Rhein Main GmbH, Langen, DE.
+Ordrerne er bekræftet til d.: 2024-09-11.
+2 ordrer, 16 varer, ca. 1.04 ldm.
+PO10147098|PO10147141
+
+***** KID nr. 9: *****
+Firstfloor SA, Trierweiler, DE.
+Ordrerne er bekræftet til d.: 2024-09-11.
+1 ordre, 6 varer, ca. 0.26 ldm.
+PO10146204
+
+***** KID nr. 10: *****
+Labelfarm GmbH, Leipzig, DE.
+Ordrerne er bekræftet til d.: 2024-09-11.
+1 ordre, 2 varer, ca. 0.37 ldm.
+PO10150193
+
+***** KID nr. 11: *****
+L-Trans München, Ismaning, DE.
+Ordrerne er bekræftet til d.: 2024-09-11.
+1 ordre, 1 vare, ca. 0.11 ldm.
+PO10150128
+
+***** KID nr. 12: *****
+AndLight ApS, Brøndby, DK.
+Ordrerne er bekræftet til d.: 2024-09-11, 2024-09-12, 2024-09-13.
+9 ordrer, 18 varer, ca. 0.78 ldm.
+PO10145712|PO10149401|PO10146588|PO10150680|PO10146402|PO10149317|PO10145710|PO10147888|PO10150663
+
+***** KID nr. 13: *****
+NC Montage, Odense S, DK.
+Ordrerne er bekræftet til d.: 2024-09-11.
+1 ordre, 2 varer, ca. 0.09 ldm.
+PO10143559
+
+***** KID nr. 14: *****
+KJEPS A/S, Næstved, DK.
+Ordrerne er bekræftet til d.: 2024-09-11.
+1 ordre, 4 varer, ca. 0.18 ldm.
+PO10143503
+
+***** KID nr. 15: *****
+Thorsen Møbler AS, Aarhus C, DK.
+Ordrerne er bekræftet til d.: 2024-09-11, 2024-09-12.
+3 ordrer, 7 varer, ca. 0.66 ldm.
+PO10147255|PO10150387|PO10149684
+
+***** KID nr. 16: *****
+Finnish Design Shop, Turku, FI.
+Ordrerne er bekræftet til d.: 2024-09-11.
+3 ordrer, 37 varer, ca. 1.43 ldm.
+PO10150111|PO10143268|PO10144576
+
+***** KID nr. 17: *****
+Martela Oy, Nummela, FI.
+Ordrerne er bekræftet til d.: 2024-09-11.
+1 ordre, 13 varer, ca. 1.43 ldm.
+PO10148013
+
+***** KID nr. 18: *****
+Stockmann Distribution Centre, Tuusula, FI.
+Ordrerne er bekræftet til d.: 2024-09-11.
+1 ordre, 4 varer, ca. 0.18 ldm.
+PO10145498
+
+***** KID nr. 19: *****
+Furmus Oy, None, FI.
+Ordrerne er bekræftet til d.: 2024-09-11.
+1 ordre, 1 vare, ca. 0.11 ldm.
+PO10150459
+
+***** KID nr. 20: *****
+Hellochair B.V, Veghel, NL.
+Ordrerne er bekræftet til d.: 2024-09-11.
+1 ordre, 1 vare, ca. 0.0 ldm.
+PO10150148
+
+***** KID nr. 21: *****
+Loft76 V.O.F., Roermond, NL.
+Ordrerne er bekræftet til d.: 2024-09-11.
+1 ordre, 1 vare, ca. 0.04 ldm.
+PO10150355
+
+***** KID nr. 22: *****
+Randstad flower promotion, Voorschoten, NL.
+Ordrerne er bekræftet til d.: 2024-09-11, 2024-09-13.
+3 ordrer, 34 varer, ca. 3.3 ldm.
+PO10149009|PO10150523|PO10150412
+
+***** KID nr. 23: *****
+Warehouse WoltersWonen, FunDesign.nl & Sleepbetter, Nijverdal, NL.
+Ordrerne er bekræftet til d.: 2024-09-11, 2024-09-13.
+3 ordrer, 8 varer, ca. 0.55 ldm.
+PO10150280|PO10150538|PO10150351
+
+***** KID nr. 24: *****
+Nordic New, Bleiswijk, NL.
+Ordrerne er bekræftet til d.: 2024-09-11.
+2 ordrer, 14 varer, ca. 0.57 ldm.
+PO10149037|PO10149297
+
+***** KID nr. 25: *****
+Don Van Hout Fotografie, Tilburg, NL.
+Ordrerne er bekræftet til d.: 2024-09-11.
+1 ordre, 2 varer, ca. 0.09 ldm.
+PO10146192
+
+***** KID nr. 26: *****
+WWLWWD B.V., Rotterdam, NL.
+Ordrerne er bekræftet til d.: 2024-09-11.
+1 ordre, 7 varer, ca. 0.51 ldm.
+PO10150464
+
+***** KID nr. 27: *****
+Eclecticist, Rijen, NL.
+Ordrerne er bekræftet til d.: 2024-09-11.
+1 ordre, 6 varer, ca. 0.4 ldm.
+PO10150452
+
+***** KID nr. 28: *****
+Royal Design Group AB/Rum21, Nybro, SE.
+Ordrerne er bekræftet til d.: 2024-09-11, 2024-09-12, 2024-09-13.
+10 ordrer, 36 varer, ca. 2.34 ldm.
+PO10150458|PO10145762|PO10146445|PO10148152|PO10150584|PO10149717|PO10150392|PO10147003|PO10143192|PO10149589
+
+***** KID nr. 29: *****
+LKAB, Luleå, SE.
+Ordrerne er bekræftet til d.: 2024-09-11.
+1 ordre, 49 varer, ca. 5.13 ldm.
+PO10143984
+
+######################
+Torsdag d. 2024-09-12:
+######################
+
+Varer i alt: 77
+Ca. ldm i alt: 5.31
+Ordrer i alt: 13
+KID'er i alt: 12
+Ordrerne har følgende bekræftelsesdatoer: 2024-09-12, 2024-09-13.
+Destinationer: DK, FR, GR, HR.
+Alle ordrenumre: PO10147312|PO10150072|PO10143760|PO10150585|PO10146169|PO10145454|PO10145379|PO10150053|PO10150681|PO10150195|PO10147912|PO10148979|PO10150460
+
+***** KID nr. 1: *****
+Riis Retail A/S, Kolding, DK.
+Ordrerne er bekræftet til d.: 2024-09-12.
+1 ordre, 4 varer, ca. 0.18 ldm.
+PO10147312
+
+***** KID nr. 2: *****
+Luxo Living A/S, Herning, DK.
+Ordrerne er bekræftet til d.: 2024-09-12, 2024-09-13.
+2 ordrer, 5 varer, ca. 0.18 ldm.
+PO10150072|PO10143760
+
+***** KID nr. 3: *****
+Gravity Studio, Vodskov, DK.
+Ordrerne er bekræftet til d.: 2024-09-12.
+1 ordre, 1 vare, ca. 0.08 ldm.
+PO10150585
+
+***** KID nr. 4: *****
+FORMA DESIGN, La Mézière, FR.
+Ordrerne er bekræftet til d.: 2024-09-12.
+1 ordre, 9 varer, ca. 0.42 ldm.
+PO10146169
+
+***** KID nr. 5: *****
+SLC, Argenteuil, FR.
+Ordrerne er bekræftet til d.: 2024-09-12.
+1 ordre, 1 vare, ca. 0.04 ldm.
+PO10145454
+
+***** KID nr. 6: *****
+STA, Argenteuil, FR.
+Ordrerne er bekræftet til d.: 2024-09-12.
+1 ordre, 29 varer, ca. 2.4 ldm.
+PO10145379
+
+***** KID nr. 7: *****
+Dépôt Silvera 1 - Vitry, Vitry Sur Seine, FR.
+Ordrerne er bekræftet til d.: 2024-09-12.
+1 ordre, 1 vare, ca. 0.1 ldm.
+PO10150053
+
+***** KID nr. 8: *****
+UnPolished Design Club, Uzès, FR.
+Ordrerne er bekræftet til d.: 2024-09-12.
+1 ordre, 7 varer, ca. 0.37 ldm.
+PO10150681
+
+***** KID nr. 9: *****
+SAS Voltex, Toulouse, FR.
+Ordrerne er bekræftet til d.: 2024-09-12.
+1 ordre, 3 varer, ca. 0.35 ldm.
+PO10150195
+
+***** KID nr. 10: *****
+TRANSPORT LE GUEVEL, Saint-Malo, FR.
+Ordrerne er bekræftet til d.: 2024-09-12.
+1 ordre, 12 varer, ca. 0.97 ldm.
+PO10147912
+
+***** KID nr. 11: *****
+MYRAN Scandinavian Design, Athens, GR.
+Ordrerne er bekræftet til d.: 2024-09-12.
+1 ordre, 4 varer, ca. 0.18 ldm.
+PO10148979
+
+***** KID nr. 12: *****
+Dizajnholik, Zagreb, HR.
+Ordrerne er bekræftet til d.: 2024-09-12.
+1 ordre, 1 vare, ca. 0.06 ldm.
+PO10150460
+
+######################
+Fredag d. 2024-09-13:
+######################
+
+Varer i alt: 219
+Ca. ldm i alt: 12.88
+Ordrer i alt: 41
+KID'er i alt: 18
+Ordrerne har følgende bekræftelsesdatoer: 2024-09-13.
+Destinationer: BE, DE, DK, NL, SE.
+Alle ordrenumre: PO10150800|PO10146489|PO10149836|PO10150690|PO10146319|PO10147070|PO10149299|PO10148035|PO10150029|PO10149911|PO10149110|PO10147889|PO10146551|PO10144858|PO10147142|PO10147811|PO10145591|PO10150411|PO10143014|PO10146059|PO10150054|PO10150360|PO10145737|PO10143949|PO10150788|PO10150276|PO10144758|PO10149651|PO10150139|PO10150732|PO10143763|PO10150438|PO10150487|PO10150564|PO10146303|PO10147404|PO10146341|PO10147841|PO10150563|PO10149749|PO10145487
+
+***** KID nr. 1: *****
+Quatuor/ CAPT nv, Boom, BE.
+Ordrerne er bekræftet til d.: 2024-09-13.
+1 ordre, 1 vare, ca. 0.0 ldm.
+PO10150800
+
+***** KID nr. 2: *****
+Forma, Bruxelles, BE.
+Ordrerne er bekræftet til d.: 2024-09-13.
+1 ordre, 9 varer, ca. 0.4 ldm.
+PO10146489
+
+***** KID nr. 3: *****
+Oosterlinck Proftools Cook & Co bvba, Heist op den Berg, BE.
+Ordrerne er bekræftet til d.: 2024-09-13.
+1 ordre, 7 varer, ca. 0.2 ldm.
+PO10149836
+
+***** KID nr. 4: *****
+B-Team, München, DE.
+Ordrerne er bekræftet til d.: 2024-09-13.
+1 ordre, 5 varer, ca. 0.63 ldm.
+PO10150690
+
+***** KID nr. 5: *****
+POPO Sitzmöbel & Stehschränke GmbH, Bremen, DE.
+Ordrerne er bekræftet til d.: 2024-09-13.
+1 ordre, 1 vare, ca. 0.04 ldm.
+PO10146319
+
+***** KID nr. 6: *****
+Connox GmbH, Laatzen Bei Hannover, DE.
+Ordrerne er bekræftet til d.: 2024-09-13.
+4 ordrer, 13 varer, ca. 0.37 ldm.
+PO10147070|PO10149299|PO10148035|PO10150029
+
+***** KID nr. 7: *****
+Brettschneider GmbH, Aachen, DE.
+Ordrerne er bekræftet til d.: 2024-09-13.
+6 ordrer, 16 varer, ca. 0.55 ldm.
+PO10149911|PO10149110|PO10147889|PO10146551|PO10144858|PO10147142
+
+***** KID nr. 8: *****
+BIS, Berlin, DE.
+Ordrerne er bekræftet til d.: 2024-09-13.
+1 ordre, 6 varer, ca. 0.21 ldm.
+PO10147811
+
+***** KID nr. 9: *****
+Frej.dk, Glostrup, DK.
+Ordrerne er bekræftet til d.: 2024-09-13.
+1 ordre, 2 varer, ca. 0.0 ldm.
+PO10145591
+
+***** KID nr. 10: *****
+Daarbak Design A/S, Brøndby, DK.
+Ordrerne er bekræftet til d.: 2024-09-13.
+1 ordre, 9 varer, ca. 0.23 ldm.
+PO10150411
+
+***** KID nr. 11: *****
+Jacobsen Plus A/S, Horsens, DK.
+Ordrerne er bekræftet til d.: 2024-09-13.
+4 ordrer, 32 varer, ca. 2.6 ldm.
+PO10143014|PO10146059|PO10150054|PO10150360
+
+***** KID nr. 12: *****
+Bolighuset Thisted A/S, Thisted, DK.
+Ordrerne er bekræftet til d.: 2024-09-13.
+1 ordre, 1 vare, ca. 0.04 ldm.
+PO10145737
+
+***** KID nr. 13: *****
+Input Interior A/S, Ølstykke, DK.
+Ordrerne er bekræftet til d.: 2024-09-13.
+1 ordre, 9 varer, ca. 0.4 ldm.
+PO10143949
+
+***** KID nr. 14: *****
+V.O.F De Woongalerij, Kortgene, NL.
+Ordrerne er bekræftet til d.: 2024-09-13.
+1 ordre, 2 varer, ca. 0.0 ldm.
+PO10150788
+
+***** KID nr. 15: *****
+STED, Eindhoven, NL.
+Ordrerne er bekræftet til d.: 2024-09-13.
+1 ordre, 1 vare, ca. 0.28 ldm.
+PO10150276
+
+***** KID nr. 16: *****
+NG-LM Commerce AB, Jordbro, SE.
+Ordrerne er bekræftet til d.: 2024-09-13.
+8 ordrer, 74 varer, ca. 5.7 ldm.
+PO10144758|PO10149651|PO10150139|PO10150732|PO10143763|PO10150438|PO10150487|PO10150564
+
+***** KID nr. 17: *****
+Växjö Elektriska Centrallager, Växjö, SE.
+Ordrerne er bekræftet til d.: 2024-09-13.
+1 ordre, 2 varer, ca. 0.04 ldm.
+PO10146303
+
+***** KID nr. 18: *****
+Nordic Nest AB, Kalmar, SE.
+Ordrerne er bekræftet til d.: 2024-09-13.
+6 ordrer, 29 varer, ca. 1.2 ldm.
+PO10147404|PO10146341|PO10147841|PO10150563|PO10149749|PO10145487
+

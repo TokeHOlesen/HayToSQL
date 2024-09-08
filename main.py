@@ -1,16 +1,14 @@
 import pandas as pd
 import sqlite3
 import sys
-from datetime import datetime, timedelta, date
+from datetime import datetime
 from pathlib import Path
 
-from OrderlineClass import Orderline
-from DayClass import Day
-from AlldaysClass import Alldays
+from WeekClass import Week
 
 # SQL_DB_PATH = Path(r"C:\Users\Toke Henrik Olesen\Code\PalissadeDB\sqldb.db")
 SQL_DB_PATH = Path(r"sqldb.db")
-EXCEL_FILE_PATH = Path(r"palnexttwo.xlsx")
+EXCEL_FILE_PATH = Path(r"palcur.xlsx")
 
 
 def main():
@@ -50,12 +48,13 @@ def main():
         sys.exit("Fejl: databasefilen findes, men indeholder ikke en gyldig tabel.")
     
     load_data_into_db(cursor, df)
+
+    cursor.execute("SELECT MIN(date), MAX(date) FROM hay;")
+    start_date, end_date = cursor.fetchall()[0]
     
-    all_days = get_orders_for_week(cursor, '2024-09-09', '2024-09-13')
-    all_days.move_lines_to_match_date()
-    all_days.calculate_kids_for_all_days()
+    week = Week(cursor, start_date, end_date)
     
-    weekly_report = all_days.generate_weekly_report()
+    weekly_report = week.generate_report()
     
     with open("report.txt", "w", encoding="UTF-8-sig") as outfile:
         outfile.write(weekly_report)
@@ -116,32 +115,6 @@ def load_data_into_db(cursor, df):
                         ),
                     )
 
-
-def get_orders_for_day(cursor, this_date):
-    """
-    Returns a list of Orderline objects for orders with the given shipping date.
-    Includes orders with the same delivery address, even if they have a later shipping date, to make sure
-    that orders get grouped together for delivery as much as possible.
-    """
-    day = Day(this_date)
-    cursor.execute("""SELECT * FROM hay
-                   WHERE address IN (SELECT address FROM hay GROUP BY address HAVING MIN(date) = ?)
-                   AND location IS NOT 'DSV';""", (this_date,))
-    result = cursor.fetchone()
-    while result is not None:
-        day.add_line(Orderline(result))
-        result = cursor.fetchone()
-    return day
-
-
-def get_orders_for_week(cursor, start_date, end_date):
-    start_date = datetime.strptime(start_date, r"%Y-%m-%d").date()
-    end_date = datetime.strptime(end_date, r"%Y-%m-%d").date()
-    all_days = Alldays()
-    for i in range((end_date - start_date).days + 1):
-        all_days.add_day(get_orders_for_day(cursor, (start_date + timedelta(days=i))))
-    return all_days
-    
  
 if __name__ == "__main__":
     main()

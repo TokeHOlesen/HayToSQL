@@ -1,4 +1,10 @@
-class Alldays:
+from datetime import datetime, timedelta
+
+from DayClass import Day
+from OrderlineClass import Orderline
+
+
+class Week:
     SHIPPING_DAYS = {
         "BG": (2,),
         "CH": (2, 4),
@@ -23,8 +29,24 @@ class Alldays:
         "TR": (3,)
     }
 
-    def __init__(self) -> None:
+    def __init__(self, cursor, start_date, end_date) -> None:
         self._days = []
+        start_date = datetime.strptime(start_date, r"%Y-%m-%d").date()
+        end_date = datetime.strptime(end_date, r"%Y-%m-%d").date()
+        for i in range((end_date - start_date).days + 1):
+            day_date = (start_date + timedelta(days=i))
+            day = Day(day_date)
+            cursor.execute("""SELECT * FROM hay
+                                   WHERE address IN
+                                   (SELECT address FROM hay GROUP BY address HAVING MIN(date) = ? AND MAX(date) <= ?)
+                                   AND location IS NOT 'DSV';""", (day_date, end_date))
+            result = cursor.fetchone()
+            while result is not None:
+                day.add_line(Orderline(result))
+                result = cursor.fetchone()
+            self.add_day(day)
+        self.calculate_kids_for_all_days()
+        self.move_lines_to_match_date()
 
     def __iter__(self):
         return iter(self._days)
@@ -71,7 +93,7 @@ class Alldays:
                                 self._days[target_weekday].add_line(orderline)
                                 day.remove_line(orderline)
 
-    def generate_weekly_report(self):
+    def generate_report(self):
         weekly_report = ""
 
         weekly_report += f"Ugerapport for perioden {self._days[0].date} - {self._days[len(self._days) - 1].date}.\n"
