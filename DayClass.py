@@ -42,6 +42,22 @@ class Day:
         for orderline in self.orderlines:
             total += orderline.number_of_items
         return total
+
+    @property
+    def furniture_total(self):
+        total = 0
+        for orderline in self.orderlines:
+            if "cushion" not in orderline.itemname.lower():
+                total += orderline.number_of_items
+        return total
+
+    @property
+    def cushions_total(self):
+        total = 0
+        for orderline in self.orderlines:
+            if "cushion" in orderline.itemname.lower():
+                total += orderline.number_of_items
+        return total
     
     @property
     def ldm_total(self):
@@ -62,13 +78,22 @@ class Day:
                 total += 1
         return total
 
+    @property
     def potentially_delayed_total(self):
         total = 0
         for kid in self.kids:
             if kid.is_delayed:
                 total += 1
         return total
-    
+
+    @property
+    def kids_in_pick_series(self):
+        total = 0
+        for kid in self.kids:
+            if kid.pickseries:
+                total += 1
+        return total
+
     @property
     def all_ordernumbers(self):
         ordernumbers = []
@@ -119,6 +144,7 @@ class Day:
                                               self.ldm_total,
                                               self.orders_total,
                                               len(self.kids),
+                                              self.kids_in_pick_series,
                                               self.dates,
                                               self.countries,
                                               self.all_ordernumbers
@@ -127,6 +153,7 @@ class Day:
         for i, kid in enumerate(self.kids):
             day_report += Report.generate_kid(i + 1,
                                               kid.custname,
+                                              kid.pickseries,
                                               kid.city,
                                               kid.country,
                                               kid.dates,

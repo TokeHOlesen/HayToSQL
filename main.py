@@ -63,7 +63,7 @@ def main():
     connection.close()
 
 
-def create_db_table(cursor):
+def create_db_table(cursor) -> None:
     cursor.execute(
         """CREATE TABLE IF NOT EXISTS hay (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -86,7 +86,7 @@ def create_db_table(cursor):
     )
     
 
-def load_data_into_db(cursor, df):
+def load_data_into_db(cursor, df) -> None:
     cursor.execute("DELETE FROM hay;")
     cursor.execute("DELETE FROM sqlite_sequence WHERE name='hay';")
     for i in range(df.shape[0]):

@@ -17,7 +17,7 @@ class Orderline:
          self.postcode,
          self.country) = sql_data
 
-        self.is_delayed = False
-        self.is_big = False
-        self.is_hay_direct = self.location == "HAY-DIRECT"
-        self.is_moved_back = False
+        self.is_delayed: bool = False
+        self.is_big: bool = False
+        self.is_hay_direct: bool = self.location == "HAY-DIRECT"
+        self.is_moved_back: bool = False

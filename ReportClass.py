@@ -61,6 +61,9 @@ class Report:
         .kid:first-child {
             margin-top: 0;
         }
+        .summary {
+            font-size: 1.05em;
+        }
         .blue-box {
             background-color: #E0F7FA;
             border-radius: 5px;
@@ -93,6 +96,14 @@ class Report:
             border: 1px solid #C8E6C9;
             display: inline-block;
         }
+        .purple-box {
+            background-color: #B2DFDB;
+            border-radius: 5px;
+            padding: 10px 10px;
+            margin: 2px;
+            border: 1px solid #80CBC4;
+            display: inline-block;
+        }
     </style>
 </head>
 <body>
@@ -110,20 +121,27 @@ class Report:
     @staticmethod
     def generate_week_summary(normal_items_total,
                               dsv_items_total,
+                              normal_furniture_total,
+                              dsv_furniture_total,
+                              normal_cushions_total,
+                              dsv_cushions_total,
                               orders_total,
                               ldm_total,
                               dsv_ldm_total,
                               kids_total,
+                              kids_with_pick_series,
                               hay_direct_kids_total,
                               potentially_delayed_orders_total):
         return (f"""
         <div class="week-summary">
-            <h3>Varer i alt: {normal_items_total + dsv_items_total} stk (almindelige ordrer: {normal_items_total} stk, DSV ordrer: {dsv_items_total} stk).</h3>
-            <h3>Ca. lademeter i alt: {ldm_total + dsv_ldm_total} ldm (almindelige ordrer: {ldm_total} ldm, DSV ordrer: {dsv_ldm_total} ldm).</h3>
-            <h3>Almindelige ordrer i alt: {orders_total}.</h3>
-            <h3>Konsoliderede ordregrupper i alt (almindelige ordrer): {kids_total}.</h3>
-            <h3>Hay-Direct ordrer: {hay_direct_kids_total}.</h3>
-            <h3>Ordrer med forsinkelsesrisiko: {potentially_delayed_orders_total}.</h3>
+            <p class="summary"><strong>Varer i alt:</strong> {normal_items_total + dsv_items_total} stk (almindelige ordrer: {normal_items_total} stk, DSV ordrer: {dsv_items_total} stk).</p>
+            <p class="summary"><strong>Møbler i alt i alt:</strong> {normal_furniture_total + dsv_furniture_total} stk (almindelige ordrer: {normal_furniture_total} stk, DSV ordrer: {dsv_furniture_total} stk).</p>
+            <p class="summary"><strong>Hynder i alt:</strong> {normal_cushions_total + dsv_cushions_total} stk (almindelige ordrer: {normal_cushions_total} stk, DSV ordrer: {dsv_cushions_total} stk).</p>
+            <p class="summary"><strong>Ca. lademeter i alt:</strong> {ldm_total + dsv_ldm_total} ldm (almindelige ordrer: {ldm_total} ldm, DSV ordrer: {dsv_ldm_total} ldm).</p>
+            <p class="summary"><strong>Almindelige ordrer i alt:</strong> {orders_total}.</p>
+            <p class="summary"><strong>Konsoliderede ordregrupper i alt (almindelige ordrer):</strong> {kids_total} ({kids_with_pick_series} er sat i pluk).</p>
+            <p class="summary"><strong>Hay-Direct ordrer:</strong> {hay_direct_kids_total}.</p>
+            <p class="summary"><strong>Ordrer, der skal rykkes til ugen før:</strong> {potentially_delayed_orders_total}.</p>
         </div>
         """)
 
@@ -134,6 +152,7 @@ class Report:
                           ldm_total,
                           orders_total,
                           kids_total,
+                          kids_in_pick_series,
                           dates,
                           destinations,
                           order_list):
@@ -143,7 +162,7 @@ class Report:
             <p>Varer i alt: {items_total}.</p>
             <p>Ca. ldm i alt: {round(ldm_total, 2)} ldm.</p>
             <p>Ordrer i alt: {orders_total}.</p>
-            <p>Konsoliderede ordregrupper i alt: {kids_total}.</p>
+            <p>Konsoliderede ordregrupper i alt: {kids_total} ({kids_in_pick_series} er sat i pluk).</p>
             <p>Varer per KID i gennemsnit: {round(items_total / kids_total, 1)}.</p>
             <p>Ordrene har følgende bekræftelsesdatoer: {', '.join(dates)}.</p>
             <p>Destinationer: {', '.join(destinations)}.</p>
@@ -159,6 +178,7 @@ class Report:
     @staticmethod
     def generate_kid(kid_number,
                      custname,
+                     pick_series,
                      city,
                      country,
                      confirmed_dates,
@@ -175,20 +195,23 @@ class Report:
 
         tags = []
         if is_delayed:
-            tags.append('<p class="red-box">Forsinkelsesrisiko: ordren skal rykkes frem til ugen før.</p>')
+            tags.append('<p class="red-box">Forsinkelsesrisiko: ordren skal rykkes til ugen før</p>')
+        if pick_series:
+            tags.append('<p class="green-box">Er sat i pluk</p>')
         if is_hay_direct:
-            tags.append('<p class="yellow-box">Hay-Direct ordre.</p>')
+            tags.append('<p class="yellow-box">Hay-Direct ordre</p>')
         if is_moved_back and not is_delayed:
-            tags.append('<p class="green-box">Rykket frem for at matche leveringsdatoen for dette land.</p>')
+            tags.append('<p class="purple-box">Rykket frem for at matche leveringsdatoen for dette land</p>')
         if is_big:
-            tags.append('<p class="blue-box">Stor ordre.</p>')
-
+            tags.append('<p class="blue-box">Stor ordre</p>')
         all_tags = "\n".join(tags)
+
         return (f"""
             <div class="kid">
                 <h3>Konsolideret ordregruppe nr. {kid_number}:</h3>
                 {all_tags}
                 <p>{custname}, {city}, {country}.</p>
+                {f"<p>Plukserie: {pick_series}</p>" if pick_series else ""}
                 <p>{orders_total} {ordre_msg}, {items_total} {vare_msg}, ca. {round(ldm_total, 2)} ldm.</p>
                 <p>{ordre_dato_msg} er bekræftet til d.: {', '.join(confirmed_dates)}.</p>
                 <p>{'|'.join(order_numbers)}</p>

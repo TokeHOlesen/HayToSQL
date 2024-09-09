@@ -56,6 +56,32 @@ class Week:
             self.dsv_orderlines.append(Orderline(dsv_data_line))
             dsv_data_line = cursor.fetchone()
 
+    def move_lines_to_match_date(self):
+        """
+        If an orderline's date falls on a day on which orders to the orderline's country may not be shipped,
+        moves the orderline back to the nearest allowed date.
+        If the orderline is moved all the way back to monday without reaching an allowed day, the orderline's
+        "is_delayed" property is set to True to mark is as delayed.
+        """
+        for day in self._days:
+            for country in day.countries:
+                weekday = target_weekday = day.weekday_number
+                if country in self.SHIPPING_DAYS:
+                    if weekday not in self.SHIPPING_DAYS[country]:
+                        while target_weekday not in self.SHIPPING_DAYS[country] and target_weekday > 0:
+                            target_weekday -= 1
+                        for orderline in day.orderlines[:]:
+                            if orderline.country == country:
+                                if target_weekday == 0 and target_weekday not in self.SHIPPING_DAYS[country]:
+                                    orderline.is_delayed = True
+                                orderline.is_moved_back = True
+                                self._days[target_weekday].add_line(orderline)
+                                day.remove_line(orderline)
+
+    def calculate_kids_for_all_days(self):
+        for day in self._days:
+            day.calculate_kids()
+
     def __iter__(self):
         return iter(self._days)
 
@@ -81,6 +107,36 @@ class Week:
         total = 0
         for dsv_orderline in self.dsv_orderlines:
             total += dsv_orderline.number_of_items
+        return total
+
+    @property
+    def number_of_furniture(self):
+        total = 0
+        for day in self._days:
+            total += day.furniture_total
+        return total
+
+    @property
+    def number_of_dsv_furniture(self):
+        total = 0
+        for orderline in self.dsv_orderlines:
+            if "cushion" not in orderline.itemname.lower():
+                total += orderline.number_of_items
+        return total
+
+    @property
+    def number_of_cushions(self):
+        total = 0
+        for day in self._days:
+            total += day.cushions_total
+        return total
+
+    @property
+    def number_of_dsv_cushions(self):
+        total = 0
+        for orderline in self.dsv_orderlines:
+            if "cushion" in orderline.itemname.lower():
+                total += orderline.number_of_items
         return total
 
     @property
@@ -112,47 +168,33 @@ class Week:
         return total
 
     @property
+    def kids_with_pick_series(self):
+        total = 0
+        for day in self._days:
+            total += day.kids_in_pick_series
+        return total
+
+    @property
     def potentially_delayed_orders_total(self):
         total = 0
         for day in self._days:
-            total += day.potentially_delayed_total()
+            total += day.potentially_delayed_total
         return total
-
-    def calculate_kids_for_all_days(self):
-        for day in self._days:
-            day.calculate_kids()
-
-    def move_lines_to_match_date(self):
-        """
-        If an orderline's date falls on a day on which orders to the orderline's country may not be shipped,
-        moves the orderline back to the nearest allowed date.
-        If the orderline is moved all the way back to monday without reaching an allowed day, the orderline's
-        "is_delayed" property is set to True to mark is as delayed.
-        """
-        for day in self._days:
-            for country in day.countries:
-                weekday = target_weekday = day.weekday_number
-                if country in self.SHIPPING_DAYS:
-                    if weekday not in self.SHIPPING_DAYS[country]:
-                        while target_weekday not in self.SHIPPING_DAYS[country] and target_weekday > 0:
-                            target_weekday -= 1
-                        for orderline in day.orderlines[:]:
-                            if orderline.country == country:
-                                if target_weekday == 0 and target_weekday not in self.SHIPPING_DAYS[country]:
-                                    orderline.is_delayed = True
-                                orderline.is_moved_back = True
-                                self._days[target_weekday].add_line(orderline)
-                                day.remove_line(orderline)
 
     def generate_report(self):
         weekly_report = Report.generate_html_head()
         weekly_report += Report.generate_header(self.start_date, self.end_date)
         weekly_report += Report.generate_week_summary(self.number_of_items,
                                                       self.number_of_dsv_items,
+                                                      self.number_of_furniture,
+                                                      self.number_of_dsv_furniture,
+                                                      self.number_of_cushions,
+                                                      self.number_of_dsv_cushions,
                                                       self.number_of_orders,
                                                       self.ldm_total,
                                                       self.dsv_ldm_total,
                                                       self.kids_total,
+                                                      self.kids_with_pick_series,
                                                       self.hay_direct_kids_total,
                                                       self.potentially_delayed_orders_total)
 
