@@ -95,39 +95,23 @@ class Week:
 
     @property
     def number_of_orders(self) -> int:
-        total: int = 0
-        for day in self._days:
-            total += day.orders_total
-        return total
+        return sum(day.orders_total for day in self._days)
 
     @property
     def number_of_items(self) -> int:
-        total: int = 0
-        for day in self._days:
-            total += day.items_total
-        return total
+        return sum(day.items_total for day in self._days)
 
     @property
     def number_of_dsv_items(self) -> int:
-        total: int = 0
-        for dsv_orderline in self.dsv_orderlines:
-            total += dsv_orderline.number_of_items
-        return total
+        return sum(dsv_orderline.number_of_items for dsv_orderline in self.dsv_orderlines)
 
     @property
     def number_of_furniture(self) -> int:
-        total: int = 0
-        for day in self._days:
-            total += day.furniture_total
-        return total
+        return sum(day.furniture_total for day in self._days)
 
     @property
     def number_of_dsv_furniture(self) -> int:
-        total: int = 0
-        for orderline in self.dsv_orderlines:
-            if "cushion" not in orderline.itemname.lower():
-                total += orderline.number_of_items
-        return total
+        return sum(orderline.number_of_items for orderline in self.dsv_orderlines if "cushion" not in orderline.itemname.lower())
 
     @property
     def number_of_cushions(self) -> int:
