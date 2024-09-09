@@ -9,7 +9,7 @@ from ReportClass import Report
 
 # SQL_DB_PATH = Path(r"C:\Users\Toke Henrik Olesen\Code\PalissadeDB\sqldb.db")
 SQL_DB_PATH = Path(r"sqldb.db")
-EXCEL_FILE_PATH = Path(r"palcur.xlsx")
+EXCEL_FILE_PATH = Path(r"pal16-20.xlsx")
 
 
 def main():
@@ -57,7 +57,7 @@ def main():
     
     weekly_report = week.generate_report()
     
-    with open("report.html", "w") as outfile:
+    with open("report.html", "w", encoding="UTF-8") as outfile:
         outfile.write(weekly_report)
     
     cursor.close()

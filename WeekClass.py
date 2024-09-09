@@ -125,7 +125,8 @@ class Week:
                         for orderline in day.orderlines[:]:
                             if orderline.country == country:
                                 if target_weekday == 0 and target_weekday not in self.SHIPPING_DAYS[country]:
-                                    orderline.flags = orderline.flags & 0b0001  # Sets the first bit to mark as delayed
+                                    orderline.is_delayed = True
+                                orderline.is_moved_back = True
                                 self._days[target_weekday].add_line(orderline)
                                 day.remove_line(orderline)
 

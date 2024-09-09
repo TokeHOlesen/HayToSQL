@@ -110,7 +110,11 @@ class Day:
                                               len(kid.ordernumbers),
                                               kid.number_of_items,
                                               kid.ldm,
-                                              kid.ordernumbers)
+                                              kid.ordernumbers,
+                                              kid.is_moved_back,
+                                              kid.is_delayed,
+                                              kid.is_hay_direct,
+                                              kid.is_big)
 
         day_report += Report.generate_day_tail()
         return day_report

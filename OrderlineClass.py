@@ -16,8 +16,8 @@ class Orderline:
          self.city,
          self.postcode,
          self.country) = sql_data
-        # Flags:
-        # 1: Order delayed
-        # 2: Large order
-        # 3: Hay-Direct order
-        self.flags = 0b0000
+
+        self.is_delayed = False
+        self.is_big = False
+        self.is_hay_direct = self.location == "HAY-DIRECT"
+        self.is_moved_back = False

@@ -25,13 +25,13 @@ class Report:
         }
         .header {
             background-color: #007BFF;
-            color: #ffffff;
+            color: #FFFFFF;
             padding: 10px 20px;
             text-align: center;
             border-radius: 5px;
         }
         .week-summary {
-            color: #333;
+            color: #030303;
             padding: 2px 20px;
             margin: 10px auto;
             border: 2px solid lightblue;
@@ -47,10 +47,10 @@ class Report:
             text-align: left;
             line-height: 0.9;
             margin-bottom: 20px;
-            background-color: #fff;
+            background-color: #FFFFFF;
         }
         .kid {
-            background-color: #f9f9f9;
+            background-color: #F9F9F9;
             padding: 5px 10px;
             margin-top: 10px;
             padding-left: 40px;
@@ -58,9 +58,40 @@ class Report:
             border-left: 3px solid lightblue;
             position: relative;
         }
-
         .kid:first-child {
             margin-top: 0;
+        }
+        .blue-box {
+            background-color: #E0F7FA;
+            border-radius: 5px;
+            padding: 10px 10px;
+            margin: 2px;
+            border: 1px solid #B2EBF2;
+            display: inline-block;
+        }
+        .red-box {
+            background-color: #FCE4EC;
+            border-radius: 5px;
+            padding: 10px 10px;
+            margin: 2px;
+            border: 1px solid #F8BBD0;
+            display: inline-block;
+        }
+        .yellow-box {
+            background-color: #FFF9C4;
+            border-radius: 5px;
+            padding: 10px 10px;
+            margin: 2px;
+            border: 1px solid #FFF59D;
+            display: inline-block;
+        }
+        .green-box {
+            background-color: #E8F5E9;
+            border-radius: 5px;
+            padding: 10px 10px;
+            margin: 2px;
+            border: 1px solid #C8E6C9;
+            display: inline-block;
         }
     </style>
 </head>
@@ -127,12 +158,24 @@ class Report:
                      orders_total,
                      items_total,
                      ldm_total,
-                     order_numbers):
+                     order_numbers,
+                     is_moved_back,
+                     is_delayed,
+                     is_hay_direct,
+                     is_big):
         ordre_dato_msg, ordre_msg = ("Ordren", "ordre") if orders_total == 1 else ("Ordrerne", "ordrer")
         vare_msg = "vare" if items_total == 1 else "varer"
+        delayed_message = '<p class="red-box">Forsinkelsesrisiko: ordren skal rykkes from til ugen før.</p>' if is_delayed else ""
+        hay_direct_message = '<p class="yellow-box">Hay-Direct ordre.</p>' if is_hay_direct else ""
+        moved_message = '<p class="blue-box">Rykket frem for at matche leveringsdatoen for dette land.</p>' if is_moved_back and not is_delayed else ""
+        big_order_message = '<p class="green-box">Stor ordre.</p>' if is_big else ""
         return (f"""
             <div class="kid">
                 <h3>Konsolideret ordregruppe nr. {kid_number}:</h3>
+                {delayed_message}
+                {hay_direct_message}
+                {moved_message}
+                {big_order_message}
                 <p>{custname}, {city}, {country}.</p>
                 <p>{orders_total} {ordre_msg}, {items_total} {vare_msg}, ca. {round(ldm_total, 2)} ldm.</p>
                 <p>{ordre_dato_msg} er bekræftet til d.: {', '.join(confirmed_dates)}.</p>
