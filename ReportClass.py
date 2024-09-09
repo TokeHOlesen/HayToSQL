@@ -1,6 +1,6 @@
 class Report:
     @staticmethod
-    def generate_html_head():
+    def generate_html_head() -> str:
         return ("""
 <!DOCTYPE html>
 <html lang="dk">
@@ -111,7 +111,7 @@ class Report:
 """)
 
     @staticmethod
-    def generate_header(start_date, end_date):
+    def generate_header(start_date, end_date) -> str:
         return (f"""
         <div class="header">
             <h1>Ugerapport for perioden {start_date} - {end_date}</h1>
@@ -131,7 +131,7 @@ class Report:
                               kids_total,
                               kids_with_pick_series,
                               hay_direct_kids_total,
-                              potentially_delayed_orders_total):
+                              potentially_delayed_orders_total) -> str:
         return (f"""
         <div class="week-summary">
             <p class="summary"><strong>Varer i alt:</strong> {normal_items_total + dsv_items_total} stk (almindelige ordrer: {normal_items_total} stk, DSV ordrer: {dsv_items_total} stk).</p>
@@ -155,7 +155,7 @@ class Report:
                           kids_in_pick_series,
                           dates,
                           destinations,
-                          order_list):
+                          order_list) -> str:
         return (f"""
         <div class="day">
             <h2>{weekday} d. {date}</h2>
@@ -170,7 +170,7 @@ class Report:
         """)
 
     @staticmethod
-    def generate_day_tail():
+    def generate_day_tail() -> str:
         return ("""
         </div>
         """)
@@ -189,7 +189,7 @@ class Report:
                      is_moved_back,
                      is_delayed,
                      is_hay_direct,
-                     is_big):
+                     is_big) -> str:
         ordre_dato_msg, ordre_msg = ("Ordren", "ordre") if orders_total == 1 else ("Ordrerne", "ordrer")
         vare_msg = "vare" if items_total == 1 else "varer"
 
@@ -204,7 +204,7 @@ class Report:
             tags.append('<p class="purple-box">Rykket frem for at matche leveringsdatoen for dette land</p>')
         if is_big:
             tags.append('<p class="blue-box">Stor ordre</p>')
-        all_tags = "\n".join(tags)
+        all_tags = "\n                ".join(tags)
 
         return (f"""
             <div class="kid">
@@ -214,12 +214,12 @@ class Report:
                 {f"<p>Plukserie: {pick_series}</p>" if pick_series else ""}
                 <p>{orders_total} {ordre_msg}, {items_total} {vare_msg}, ca. {round(ldm_total, 2)} ldm.</p>
                 <p>{ordre_dato_msg} er bekræftet til d.: {', '.join(confirmed_dates)}.</p>
-                <p>{'|'.join(order_numbers)}</p>
+                <p>{'|&#8203;'.join(order_numbers)}</p>
             </div>
         """)
 
     @staticmethod
-    def generate_html_tail():
+    def generate_html_tail() -> str:
         return ("""
     </div>
 </body>

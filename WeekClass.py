@@ -1,3 +1,4 @@
+import sqlite3
 from datetime import datetime, timedelta
 
 from DayClass import Day
@@ -30,18 +31,21 @@ class Week:
         "TR": (3,)
     }
 
-    def __init__(self, cursor, start_date, end_date) -> None:
-        self._days = []
-        self.start_date = datetime.strptime(start_date, r"%Y-%m-%d").date()
-        self.end_date = datetime.strptime(end_date, r"%Y-%m-%d").date()
+    def __init__(self,
+                 cursor: sqlite3.Cursor,
+                 start_date: str,
+                 end_date: str) -> None:
+        self._days: list[Day] = []
+        self.start_date: datetime.date = datetime.strptime(start_date, r"%Y-%m-%d").date()
+        self.end_date: datetime.date = datetime.strptime(end_date, r"%Y-%m-%d").date()
         for i in range((self.end_date - self.start_date).days + 1):
-            day_date = (self.start_date + timedelta(days=i))
-            day = Day(day_date)
+            day_date: datetime.date = (self.start_date + timedelta(days=i))
+            day: Day = Day(day_date)
             cursor.execute("""SELECT * FROM hay
                                    WHERE address IN
                                    (SELECT address FROM hay GROUP BY address HAVING MIN(date) = ?)
                                    AND location IS NOT 'DSV';""", (day_date,))
-            day_data_line = cursor.fetchone()
+            day_data_line: tuple = cursor.fetchone()
             while day_data_line is not None:
                 day.add_line(Orderline(day_data_line))
                 day_data_line = cursor.fetchone()
@@ -49,14 +53,14 @@ class Week:
         self.move_lines_to_match_date()
         self.calculate_kids_for_all_days()
 
-        self.dsv_orderlines = []
+        self.dsv_orderlines: list[Orderline] = []
         cursor.execute("""SELECT * FROM hay WHERE location IS 'DSV';""")
-        dsv_data_line = cursor.fetchone()
+        dsv_data_line: tuple = cursor.fetchone()
         while dsv_data_line is not None:
             self.dsv_orderlines.append(Orderline(dsv_data_line))
             dsv_data_line = cursor.fetchone()
 
-    def move_lines_to_match_date(self):
+    def move_lines_to_match_date(self) -> None:
         """
         If an orderline's date falls on a day on which orders to the orderline's country may not be shipped,
         moves the orderline back to the nearest allowed date.
@@ -65,7 +69,8 @@ class Week:
         """
         for day in self._days:
             for country in day.countries:
-                weekday = target_weekday = day.weekday_number
+                weekday: int = day.weekday_number
+                target_weekday: int = day.weekday_number
                 if country in self.SHIPPING_DAYS:
                     if weekday not in self.SHIPPING_DAYS[country]:
                         while target_weekday not in self.SHIPPING_DAYS[country] and target_weekday > 0:
@@ -78,110 +83,110 @@ class Week:
                                 self._days[target_weekday].add_line(orderline)
                                 day.remove_line(orderline)
 
-    def calculate_kids_for_all_days(self):
+    def calculate_kids_for_all_days(self) -> None:
         for day in self._days:
             day.calculate_kids()
 
-    def __iter__(self):
+    def __iter__(self) -> iter:
         return iter(self._days)
 
-    def add_day(self, day):
+    def add_day(self, day) -> None:
         self._days.append(day)
 
     @property
-    def number_of_orders(self):
-        total = 0
+    def number_of_orders(self) -> int:
+        total: int = 0
         for day in self._days:
             total += day.orders_total
         return total
 
     @property
-    def number_of_items(self):
-        total = 0
+    def number_of_items(self) -> int:
+        total: int = 0
         for day in self._days:
             total += day.items_total
         return total
 
     @property
-    def number_of_dsv_items(self):
-        total = 0
+    def number_of_dsv_items(self) -> int:
+        total: int = 0
         for dsv_orderline in self.dsv_orderlines:
             total += dsv_orderline.number_of_items
         return total
 
     @property
-    def number_of_furniture(self):
-        total = 0
+    def number_of_furniture(self) -> int:
+        total: int = 0
         for day in self._days:
             total += day.furniture_total
         return total
 
     @property
-    def number_of_dsv_furniture(self):
-        total = 0
+    def number_of_dsv_furniture(self) -> int:
+        total: int = 0
         for orderline in self.dsv_orderlines:
             if "cushion" not in orderline.itemname.lower():
                 total += orderline.number_of_items
         return total
 
     @property
-    def number_of_cushions(self):
-        total = 0
+    def number_of_cushions(self) -> int:
+        total: int = 0
         for day in self._days:
             total += day.cushions_total
         return total
 
     @property
-    def number_of_dsv_cushions(self):
-        total = 0
+    def number_of_dsv_cushions(self) -> int:
+        total: int = 0
         for orderline in self.dsv_orderlines:
             if "cushion" in orderline.itemname.lower():
                 total += orderline.number_of_items
         return total
 
     @property
-    def ldm_total(self):
-        total = 0
+    def ldm_total(self) -> float:
+        total: float = 0
         for day in self._days:
             total += day.ldm_total
         return round(total, 2)
 
     @property
-    def dsv_ldm_total(self):
-        total = 0
+    def dsv_ldm_total(self) -> float:
+        total: float = 0
         for orderline in self.dsv_orderlines:
             total += orderline.loadmeter
         return round(total, 2)
 
     @property
-    def kids_total(self):
-        total = 0
+    def kids_total(self) -> int:
+        total: int = 0
         for day in self._days:
             total += day.kids_total
         return total
 
     @property
-    def hay_direct_kids_total(self):
-        total = 0
+    def hay_direct_kids_total(self) -> int:
+        total: int = 0
         for day in self._days:
             total += day.hay_direct_total
         return total
 
     @property
-    def kids_with_pick_series(self):
-        total = 0
+    def kids_with_pick_series(self) -> int:
+        total: int = 0
         for day in self._days:
             total += day.kids_in_pick_series
         return total
 
     @property
-    def potentially_delayed_orders_total(self):
-        total = 0
+    def potentially_delayed_orders_total(self) -> int:
+        total: int = 0
         for day in self._days:
             total += day.potentially_delayed_total
         return total
 
-    def generate_report(self):
+    def generate_report(self) -> str:
         weekly_report = Report.generate_html_head()
         weekly_report += Report.generate_header(self.start_date, self.end_date)
         weekly_report += Report.generate_week_summary(self.number_of_items,

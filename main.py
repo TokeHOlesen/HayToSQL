@@ -1,3 +1,4 @@
+import pandas
 import pandas as pd
 import sqlite3
 import sys
@@ -6,14 +7,14 @@ from pathlib import Path
 
 from WeekClass import Week
 
-SQL_DB_PATH = Path(r"sqldb.db")
-EXCEL_FILE_PATH = Path(r"pal16-20.xlsx")
+SQL_DB_PATH: Path = Path(r"sqldb.db")
+EXCEL_FILE_PATH: Path = Path(r"pal16-20.xlsx")
 
 
 def main():
     # TODO: exceptions
     # noinspection PyTypeChecker
-    df = pd.read_excel(EXCEL_FILE_PATH, usecols=[
+    df: pandas.DataFrame = pd.read_excel(EXCEL_FILE_PATH, usecols=[
         "Plukserie (ordrelinje)",
         "Varenummer", "Beskrivelse",
         "Antal3",
@@ -40,8 +41,8 @@ def main():
             print("Mislykket.")
             sys.exit(f'Fejl: kan ikke oprette "{SQL_DB_PATH.name}".')
     try:
-        connection = sqlite3.connect(SQL_DB_PATH)
-        cursor = connection.cursor()
+        connection: sqlite3.Connection = sqlite3.connect(SQL_DB_PATH)
+        cursor: sqlite3.Cursor = connection.cursor()
         create_db_table(cursor)
     except sqlite3.OperationalError:
         sys.exit("Fejl: databasefilen findes, men indeholder ikke en gyldig tabel.")
@@ -49,21 +50,23 @@ def main():
     load_data_into_db(cursor, df)
 
     cursor.execute("SELECT MIN(date), MAX(date) FROM hay;")
+    start_date: str
+    end_date: str
     start_date, end_date = cursor.fetchall()[0]
     
-    week = Week(cursor, start_date, end_date)
+    week: Week = Week(cursor, start_date, end_date)
     
-    weekly_report = week.generate_report()
+    weekly_report: str = week.generate_report()
     
     with open("report.html", "w", encoding="UTF-8") as outfile:
         outfile.write(weekly_report)
-    
+
     cursor.close()
     connection.commit()
     connection.close()
 
 
-def create_db_table(cursor) -> None:
+def create_db_table(cursor: sqlite3.Cursor) -> None:
     cursor.execute(
         """CREATE TABLE IF NOT EXISTS hay (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -86,7 +89,7 @@ def create_db_table(cursor) -> None:
     )
     
 
-def load_data_into_db(cursor, df) -> None:
+def load_data_into_db(cursor: sqlite3.Cursor, df: pandas.DataFrame) -> None:
     cursor.execute("DELETE FROM hay;")
     cursor.execute("DELETE FROM sqlite_sequence WHERE name='hay';")
     for i in range(df.shape[0]):
