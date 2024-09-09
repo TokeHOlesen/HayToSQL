@@ -104,6 +104,20 @@ class Week:
             total += day.kids_total
         return total
 
+    @property
+    def hay_direct_kids_total(self):
+        total = 0
+        for day in self._days:
+            total += day.hay_direct_total
+        return total
+
+    @property
+    def potentially_delayed_orders_total(self):
+        total = 0
+        for day in self._days:
+            total += day.potentially_delayed_total()
+        return total
+
     def calculate_kids_for_all_days(self):
         for day in self._days:
             day.calculate_kids()
@@ -113,7 +127,7 @@ class Week:
         If an orderline's date falls on a day on which orders to the orderline's country may not be shipped,
         moves the orderline back to the nearest allowed date.
         If the orderline is moved all the way back to monday without reaching an allowed day, the orderline's
-        "message" property is set to "Forsinket" to mark is as delayed.
+        "is_delayed" property is set to True to mark is as delayed.
         """
         for day in self._days:
             for country in day.countries:
@@ -138,7 +152,9 @@ class Week:
                                                       self.number_of_orders,
                                                       self.ldm_total,
                                                       self.dsv_ldm_total,
-                                                      self.kids_total)
+                                                      self.kids_total,
+                                                      self.hay_direct_kids_total,
+                                                      self.potentially_delayed_orders_total)
 
         for day in self._days:
             weekly_report += day.get_day_report()

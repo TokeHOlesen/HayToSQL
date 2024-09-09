@@ -53,6 +53,21 @@ class Day:
     @property
     def kids_total(self):
         return len(self.kids)
+
+    @property
+    def hay_direct_total(self):
+        total = 0
+        for kid in self.kids:
+            if kid.is_hay_direct:
+                total += 1
+        return total
+
+    def potentially_delayed_total(self):
+        total = 0
+        for kid in self.kids:
+            if kid.is_delayed:
+                total += 1
+        return total
     
     @property
     def all_ordernumbers(self):
@@ -88,6 +103,14 @@ class Day:
                     orderline_list.append(orderline)
             self._kids.append(SimulatedKid(orderline_list))
         self._kids.sort(key=lambda kid: kid.country)
+        self.move_delayed_kids_to_beginning()
+
+    def move_delayed_kids_to_beginning(self):
+        for kid in self._kids:
+            if kid.is_delayed:
+                kid_to_move = kid
+                self._kids.remove(kid_to_move)
+                self._kids.insert(0, kid_to_move)
 
     def get_day_report(self):
         day_report = Report.generate_day_head(self.weekday,

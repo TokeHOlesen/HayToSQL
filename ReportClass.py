@@ -108,15 +108,22 @@ class Report:
         """)
 
     @staticmethod
-    def generate_week_summary(normal_items_total, dsv_items_total, orders_total, ldm_total, dsv_ldm_total, kids_total):
+    def generate_week_summary(normal_items_total,
+                              dsv_items_total,
+                              orders_total,
+                              ldm_total,
+                              dsv_ldm_total,
+                              kids_total,
+                              hay_direct_kids_total,
+                              potentially_delayed_orders_total):
         return (f"""
         <div class="week-summary">
             <h3>Varer i alt: {normal_items_total + dsv_items_total} stk (almindelige ordrer: {normal_items_total} stk, DSV ordrer: {dsv_items_total} stk).</h3>
             <h3>Ca. lademeter i alt: {ldm_total + dsv_ldm_total} ldm (almindelige ordrer: {ldm_total} ldm, DSV ordrer: {dsv_ldm_total} ldm).</h3>
             <h3>Almindelige ordrer i alt: {orders_total}.</h3>
             <h3>Konsoliderede ordregrupper i alt (almindelige ordrer): {kids_total}.</h3>
-            
-            
+            <h3>Hay-Direct ordrer: {hay_direct_kids_total}.</h3>
+            <h3>Ordrer med forsinkelsesrisiko: {potentially_delayed_orders_total}.</h3>
         </div>
         """)
 
@@ -165,17 +172,22 @@ class Report:
                      is_big):
         ordre_dato_msg, ordre_msg = ("Ordren", "ordre") if orders_total == 1 else ("Ordrerne", "ordrer")
         vare_msg = "vare" if items_total == 1 else "varer"
-        delayed_message = '<p class="red-box">Forsinkelsesrisiko: ordren skal rykkes from til ugen før.</p>' if is_delayed else ""
-        hay_direct_message = '<p class="yellow-box">Hay-Direct ordre.</p>' if is_hay_direct else ""
-        moved_message = '<p class="blue-box">Rykket frem for at matche leveringsdatoen for dette land.</p>' if is_moved_back and not is_delayed else ""
-        big_order_message = '<p class="green-box">Stor ordre.</p>' if is_big else ""
+
+        tags = []
+        if is_delayed:
+            tags.append('<p class="red-box">Forsinkelsesrisiko: ordren skal rykkes frem til ugen før.</p>')
+        if is_hay_direct:
+            tags.append('<p class="yellow-box">Hay-Direct ordre.</p>')
+        if is_moved_back and not is_delayed:
+            tags.append('<p class="green-box">Rykket frem for at matche leveringsdatoen for dette land.</p>')
+        if is_big:
+            tags.append('<p class="blue-box">Stor ordre.</p>')
+
+        all_tags = "\n".join(tags)
         return (f"""
             <div class="kid">
                 <h3>Konsolideret ordregruppe nr. {kid_number}:</h3>
-                {delayed_message}
-                {hay_direct_message}
-                {moved_message}
-                {big_order_message}
+                {all_tags}
                 <p>{custname}, {city}, {country}.</p>
                 <p>{orders_total} {ordre_msg}, {items_total} {vare_msg}, ca. {round(ldm_total, 2)} ldm.</p>
                 <p>{ordre_dato_msg} er bekræftet til d.: {', '.join(confirmed_dates)}.</p>

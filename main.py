@@ -5,9 +5,7 @@ from datetime import datetime
 from pathlib import Path
 
 from WeekClass import Week
-from ReportClass import Report
 
-# SQL_DB_PATH = Path(r"C:\Users\Toke Henrik Olesen\Code\PalissadeDB\sqldb.db")
 SQL_DB_PATH = Path(r"sqldb.db")
 EXCEL_FILE_PATH = Path(r"pal16-20.xlsx")
 
