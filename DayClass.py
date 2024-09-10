@@ -34,40 +34,23 @@ class Day:
     
     @property
     def orders_total(self) -> int:
-        total: int = 0
-        for kid in self.kids:
-            total += len(kid.ordernumbers)
-        return total
+        return sum(len(kid.ordernumbers) for kid in self.kids)
     
     @property
     def items_total(self) -> int:
-        total: int = 0
-        for orderline in self.orderlines:
-            total += orderline.number_of_items
-        return total
+        return sum(orderline.number_of_items for orderline in self.orderlines)
 
     @property
     def furniture_total(self) -> int:
-        total: int = 0
-        for orderline in self.orderlines:
-            if "cushion" not in orderline.itemname.lower():
-                total += orderline.number_of_items
-        return total
+        return sum(orderline.number_of_items for orderline in self.orderlines if "cushion" not in orderline.itemname.lower())
 
     @property
     def cushions_total(self) -> int:
-        total: int = 0
-        for orderline in self.orderlines:
-            if "cushion" in orderline.itemname.lower():
-                total += orderline.number_of_items
-        return total
+        return sum(orderline.number_of_items for orderline in self.orderlines if "cushion" in orderline.itemname.lower())
     
     @property
     def ldm_total(self) -> float:
-        total: float = 0
-        for orderline in self.orderlines:
-            total += orderline.loadmeter
-        return total
+        return sum(orderline.loadmeter for orderline in self.orderlines)
 
     @property
     def kids_total(self) -> int:
@@ -75,67 +58,35 @@ class Day:
 
     @property
     def hay_direct_total(self) -> int:
-        total: int = 0
-        for kid in self.kids:
-            if kid.is_hay_direct:
-                total += 1
-        return total
+        return sum(1 for kid in self.kids if kid.is_hay_direct)
 
     @property
     def big_orders_total(self) -> int:
-        total: int = 0
-        for kid in self.kids:
-            if kid.is_big:
-                total += 1
-        return total
+        return sum(1 for kid in self.kids if kid.is_big)
 
     @property
     def small_orders_total(self) -> int:
-        total: int = 0
-        for kid in self.kids:
-            if not kid.is_big:
-                total += 1
-        return total
-
-    @property
-    def items_in_big_orders_total(self) -> int:
-        total: int = 0
-        for kid in self.kids:
-            if kid.is_big:
-                total += kid.number_of_items
-        return total
-
-    @property
-    def items_in_small_orders_total(self) -> int:
-        total: int = 0
-        for kid in self.kids:
-            if not kid.is_big:
-                total += kid.number_of_items
-        return total
+        return sum(1 for kid in self.kids if not kid.is_big)
 
     @property
     def potentially_delayed_total(self) -> int:
-        total: int = 0
-        for kid in self.kids:
-            if kid.is_delayed:
-                total += 1
-        return total
+        return sum(1 for kid in self.kids if kid.is_delayed)
+
+    @property
+    def items_in_big_orders_total(self) -> int:
+        return sum(kid.number_of_items for kid in self.kids if kid.is_big)
+
+    @property
+    def items_in_small_orders_total(self) -> int:
+        return sum(kid.number_of_items for kid in self.kids if not kid.is_big)
 
     @property
     def kids_in_pick_series(self) -> int:
-        total: int = 0
-        for kid in self.kids:
-            if kid.pickseries:
-                total += 1
-        return total
+        return sum(1 for kid in self.kids if kid.pickseries)
 
     @property
     def all_ordernumbers(self) -> list[str]:
-        ordernumbers: list[str] = []
-        for kid in self.kids:
-            for ordernumber in kid.ordernumbers:
-                ordernumbers.append(ordernumber)
-        return ordernumbers
+        return [ordernumber for kid in self.kids for ordernumber in kid.ordernumbers]
 
     @property
     def countries(self) -> list[str]:
