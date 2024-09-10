@@ -52,7 +52,7 @@ class Day:
     
     @property
     def ldm_total(self) -> float:
-        return sum(orderline.loadmeter for orderline in self.orderlines)
+        return sum(orderline.ldm for orderline in self.orderlines)
 
     @property
     def kids_total(self) -> int:

@@ -147,7 +147,7 @@ class Week:
 
     @property
     def dsv_ldm_total(self) -> float:
-        return round(sum(orderline.loadmeter for orderline in self.dsv_orderlines), 2)
+        return round(sum(orderline.ldm for orderline in self.dsv_orderlines), 2)
 
     @property
     def kids_total(self) -> int:

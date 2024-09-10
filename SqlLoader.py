@@ -5,6 +5,7 @@ from datetime import datetime
 
 
 def create_db_table(cursor: sqlite3.Cursor) -> None:
+    """Creates an SQLite3 table, with fields matching those of an Orderline object."""
     cursor.execute(
         """CREATE TABLE IF NOT EXISTS hay (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
