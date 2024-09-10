@@ -82,6 +82,38 @@ class Day:
         return total
 
     @property
+    def big_orders_total(self) -> int:
+        total: int = 0
+        for kid in self.kids:
+            if kid.is_big:
+                total += 1
+        return total
+
+    @property
+    def small_orders_total(self) -> int:
+        total: int = 0
+        for kid in self.kids:
+            if not kid.is_big:
+                total += 1
+        return total
+
+    @property
+    def items_in_big_orders_total(self) -> int:
+        total: int = 0
+        for kid in self.kids:
+            if kid.is_big:
+                total += kid.number_of_items
+        return total
+
+    @property
+    def items_in_small_orders_total(self) -> int:
+        total: int = 0
+        for kid in self.kids:
+            if not kid.is_big:
+                total += kid.number_of_items
+        return total
+
+    @property
     def potentially_delayed_total(self) -> int:
         total: int = 0
         for kid in self.kids:
@@ -144,8 +176,12 @@ class Day:
         day_report = Report.generate_day_head(self.weekday,
                                               self.date,
                                               self.items_total,
+                                              self.items_in_small_orders_total,
+                                              self.items_in_big_orders_total,
                                               self.ldm_total,
                                               self.orders_total,
+                                              self.small_orders_total,
+                                              self.big_orders_total,
                                               len(self.kids),
                                               self.kids_in_pick_series,
                                               self.dates,

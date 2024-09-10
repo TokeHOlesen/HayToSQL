@@ -57,7 +57,7 @@ def main():
     week: Week = Week(cursor, start_date, end_date)
     
     weekly_report: str = week.generate_report()
-    
+
     with open("report.html", "w", encoding="UTF-8") as outfile:
         outfile.write(weekly_report)
 

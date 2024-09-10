@@ -98,8 +98,24 @@ class Week:
         return sum(day.orders_total for day in self._days)
 
     @property
+    def number_of_big_orders(self) -> int:
+        return sum(day.big_orders_total for day in self._days)
+
+    @property
+    def number_of_small_orders(self) -> int:
+        return sum(day.small_orders_total for day in self._days)
+
+    @property
     def number_of_items(self) -> int:
         return sum(day.items_total for day in self._days)
+
+    @property
+    def number_of_items_in_big_orders(self) -> int:
+        return sum(day.items_in_big_orders_total for day in self._days)
+
+    @property
+    def number_of_items_in_small_orders(self) -> int:
+        return sum(day.items_in_small_orders_total for day in self._days)
 
     @property
     def number_of_dsv_items(self) -> int:
@@ -115,71 +131,50 @@ class Week:
 
     @property
     def number_of_cushions(self) -> int:
-        total: int = 0
-        for day in self._days:
-            total += day.cushions_total
-        return total
+        return sum(day.cushions_total for day in self._days)
 
     @property
     def number_of_dsv_cushions(self) -> int:
-        total: int = 0
-        for orderline in self.dsv_orderlines:
-            if "cushion" in orderline.itemname.lower():
-                total += orderline.number_of_items
-        return total
+        return sum(orderline.number_of_items for orderline in self.dsv_orderlines if "cushion" in orderline.itemname.lower())
 
     @property
     def ldm_total(self) -> float:
-        total: float = 0
-        for day in self._days:
-            total += day.ldm_total
-        return round(total, 2)
+        return round(sum(day.ldm_total for day in self._days), 2)
 
     @property
     def dsv_ldm_total(self) -> float:
-        total: float = 0
-        for orderline in self.dsv_orderlines:
-            total += orderline.loadmeter
-        return round(total, 2)
+        return round(sum(orderline.loadmeter for orderline in self.dsv_orderlines), 2)
 
     @property
     def kids_total(self) -> int:
-        total: int = 0
-        for day in self._days:
-            total += day.kids_total
-        return total
+        return sum(day.kids_total for day in self._days)
 
     @property
     def hay_direct_kids_total(self) -> int:
-        total: int = 0
-        for day in self._days:
-            total += day.hay_direct_total
-        return total
+        return sum(day.hay_direct_total for day in self._days)
 
     @property
     def kids_with_pick_series(self) -> int:
-        total: int = 0
-        for day in self._days:
-            total += day.kids_in_pick_series
-        return total
+        return sum(day.kids_in_pick_series for day in self._days)
 
     @property
     def potentially_delayed_orders_total(self) -> int:
-        total: int = 0
-        for day in self._days:
-            total += day.potentially_delayed_total
-        return total
+        return sum(day.potentially_delayed_total for day in self._days)
 
     def generate_report(self) -> str:
         weekly_report = Report.generate_html_head()
         weekly_report += Report.generate_header(self.start_date, self.end_date)
         weekly_report += Report.generate_week_summary(self.number_of_items,
+                                                      self.number_of_items_in_small_orders,
+                                                      self.number_of_items_in_big_orders,
                                                       self.number_of_dsv_items,
                                                       self.number_of_furniture,
                                                       self.number_of_dsv_furniture,
                                                       self.number_of_cushions,
                                                       self.number_of_dsv_cushions,
                                                       self.number_of_orders,
+                                                      self.number_of_small_orders,
+                                                      self.number_of_big_orders,
                                                       self.ldm_total,
                                                       self.dsv_ldm_total,
                                                       self.kids_total,

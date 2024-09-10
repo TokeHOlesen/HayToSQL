@@ -24,7 +24,7 @@ class Report:
             box-shadow: 0 0 30px rgba(0,0,0,0.1);
         }
         .header {
-            background-color: #007BFF;
+            background-color: #56A2EF;
             color: #FFFFFF;
             padding: 10px 20px;
             text-align: center;
@@ -120,26 +120,31 @@ class Report:
 
     @staticmethod
     def generate_week_summary(normal_items_total,
+                              normal_items_in_small_orders,
+                              normal_items_in_big_orders,
                               dsv_items_total,
                               normal_furniture_total,
                               dsv_furniture_total,
                               normal_cushions_total,
                               dsv_cushions_total,
                               orders_total,
+                              small_orders_total,
+                              big_orders_total,
                               ldm_total,
                               dsv_ldm_total,
                               kids_total,
                               kids_with_pick_series,
                               hay_direct_kids_total,
                               potentially_delayed_orders_total) -> str:
+
         return (f"""
         <div class="week-summary">
-            <p class="summary"><strong>Varer i alt:</strong> {normal_items_total + dsv_items_total} stk (almindelige ordrer: {normal_items_total} stk, DSV ordrer: {dsv_items_total} stk).</p>
-            <p class="summary"><strong>Møbler i alt i alt:</strong> {normal_furniture_total + dsv_furniture_total} stk (almindelige ordrer: {normal_furniture_total} stk, DSV ordrer: {dsv_furniture_total} stk).</p>
-            <p class="summary"><strong>Hynder i alt:</strong> {normal_cushions_total + dsv_cushions_total} stk (almindelige ordrer: {normal_cushions_total} stk, DSV ordrer: {dsv_cushions_total} stk).</p>
-            <p class="summary"><strong>Ca. lademeter i alt:</strong> {ldm_total + dsv_ldm_total} ldm (almindelige ordrer: {ldm_total} ldm, DSV ordrer: {dsv_ldm_total} ldm).</p>
+            <p class="summary"><strong>Varer i alt:</strong> {normal_items_total + dsv_items_total} stk (alm. ordrer: {normal_items_total} stk ({normal_items_in_big_orders} i store ordrer, {normal_items_in_small_orders} i små ordrer), DSV ordrer: {dsv_items_total} stk).</p>
+            <p class="summary"><strong>Møbler i alt i alt:</strong> {normal_furniture_total + dsv_furniture_total} stk (alm. ordrer: {normal_furniture_total} stk, DSV ordrer: {dsv_furniture_total} stk).</p>
+            <p class="summary"><strong>Hynder i alt:</strong> {normal_cushions_total + dsv_cushions_total} stk (alm. ordrer: {normal_cushions_total} stk, DSV ordrer: {dsv_cushions_total} stk).</p>
+            <p class="summary"><strong>Ca. lademeter i alt:</strong> {round(ldm_total + dsv_ldm_total, 2)} ldm (alm. ordrer: {ldm_total} ldm, DSV ordrer: {dsv_ldm_total} ldm).</p>
             <p class="summary"><strong>Almindelige ordrer i alt:</strong> {orders_total}.</p>
-            <p class="summary"><strong>Konsoliderede ordregrupper i alt (almindelige ordrer):</strong> {kids_total} ({kids_with_pick_series} er sat i pluk).</p>
+            <p class="summary"><strong>Konsoliderede ordregrupper i alt (almindelige ordrer):</strong> {kids_total} (store: {big_orders_total}, små: {small_orders_total}) - {kids_with_pick_series} er sat i pluk.</p>
             <p class="summary"><strong>Hay-Direct ordrer:</strong> {hay_direct_kids_total}.</p>
             <p class="summary"><strong>Ordrer, der skal rykkes til ugen før:</strong> {potentially_delayed_orders_total}.</p>
         </div>
@@ -149,8 +154,12 @@ class Report:
     def generate_day_head(weekday,
                           date,
                           items_total,
+                          items_in_small_orders_total,
+                          items_in_big_orders_total,
                           ldm_total,
                           orders_total,
+                          small_orders_total,
+                          big_orders_total,
                           kids_total,
                           kids_in_pick_series,
                           dates,
@@ -159,13 +168,12 @@ class Report:
         return (f"""
         <div class="day">
             <h2>{weekday} d. {date}</h2>
-            <p>Varer i alt: {items_total}.</p>
-            <p>Ca. ldm i alt: {round(ldm_total, 2)} ldm.</p>
-            <p>Ordrer i alt: {orders_total}.</p>
-            <p>Konsoliderede ordregrupper i alt: {kids_total} ({kids_in_pick_series} er sat i pluk).</p>
-            <p>Varer per KID i gennemsnit: {round(items_total / kids_total, 1)}.</p>
-            <p>Ordrene har følgende bekræftelsesdatoer: {', '.join(dates)}.</p>
-            <p>Destinationer: {', '.join(destinations)}.</p>
+            <p><strong>Varer i alt:</strong> {items_total} (store ordrer: {items_in_big_orders_total}, små ordrer: {items_in_small_orders_total}).</p>
+            <p><strong>Ca. ldm i alt:</strong> {round(ldm_total, 2)} ldm.</p>
+            <p><strong>Ordrer i alt:</strong> {orders_total}.</p>
+            <p><strong>Konsoliderede ordregrupper i alt:</strong> {kids_total} (store: {big_orders_total}, små: {small_orders_total}) - {kids_in_pick_series} er sat i pluk.</p>
+            <p><strong>Ordrene har følgende bekræftelsesdatoer:</strong> {', '.join(dates)}.</p>
+            <p><strong>Destinationer:</strong> {', '.join(destinations)}.</p>
             <p style="line-height: 1.2">{'|&#8203;'.join(order_list)}</p>
         """)
 
