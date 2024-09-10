@@ -127,7 +127,9 @@ class Week:
 
     @property
     def number_of_dsv_furniture(self) -> int:
-        return sum(orderline.number_of_items for orderline in self.dsv_orderlines if "cushion" not in orderline.itemname.lower())
+        return sum(orderline.number_of_items
+                   for orderline in self.dsv_orderlines
+                   if "cushion" not in orderline.itemname.lower())
 
     @property
     def number_of_cushions(self) -> int:
@@ -135,7 +137,9 @@ class Week:
 
     @property
     def number_of_dsv_cushions(self) -> int:
-        return sum(orderline.number_of_items for orderline in self.dsv_orderlines if "cushion" in orderline.itemname.lower())
+        return sum(orderline.number_of_items
+                   for orderline in self.dsv_orderlines
+                   if "cushion" in orderline.itemname.lower())
 
     @property
     def ldm_total(self) -> float:

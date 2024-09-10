@@ -42,11 +42,13 @@ class Day:
 
     @property
     def furniture_total(self) -> int:
-        return sum(orderline.number_of_items for orderline in self.orderlines if "cushion" not in orderline.itemname.lower())
+        return sum(
+            orderline.number_of_items for orderline in self.orderlines if "cushion" not in orderline.itemname.lower())
 
     @property
     def cushions_total(self) -> int:
-        return sum(orderline.number_of_items for orderline in self.orderlines if "cushion" in orderline.itemname.lower())
+        return sum(
+            orderline.number_of_items for orderline in self.orderlines if "cushion" in orderline.itemname.lower())
     
     @property
     def ldm_total(self) -> float:
