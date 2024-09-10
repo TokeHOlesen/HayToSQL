@@ -45,7 +45,7 @@ def load_data_into_db(cursor: sqlite3.Cursor, df: pandas.DataFrame) -> None:
                 df.loc[i, "Description 2"],
                 int(df.loc[i, "Antal3"]),
                 df.loc[i, "Beregnet ladmeter"],
-                datetime.strptime(str(df.loc[i, "Bekræftet leveringsdato"]),
+                datetime.strptime(str(df.loc[i, "BekrÃ¦ftet leveringsdato"]),
                                   "%Y-%m-%d %H:%M:%S").isoformat(),
                 df.loc[i, "Konsoliderings ID"],
                 df.loc[i, "Leveringsnavn"],
