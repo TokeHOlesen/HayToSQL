@@ -6,10 +6,36 @@ from ReportClass import Report
 
 
 class Day:
+    """
+    Objects of this class have two list fields: ._orderlines and .kids.
+    ._orderlines contains all the orderlines that must be shipped on this day. This includes orderlines with dates not
+    equal to the Day's date, but grouped together because they share the delivery address. These will be grouped
+    by address and used to contruct Kid objects with .calculate_kids().
+    ._kids contains object of the Kid class that in turn contain all the orderlines that share the shipping address and
+    will be packaged together - they can be thought of as a self-contained entity (a meta-order of sorts).
+    Also has a number of other properties describing the day.
+    """
     def __init__(self, date: datetime.date) -> None:
         self._date: datetime.date = date
         self._orderlines: list[Orderline] = []
         self._kids: list[Kid] = []
+
+    def calculate_kids(self) -> None:
+        for address in self.addresses:
+            orderline_list: list[Orderline] = []
+            for orderline in self.orderlines:
+                if orderline.address == address:
+                    orderline_list.append(orderline)
+            self._kids.append(Kid(orderline_list))
+        self._kids.sort(key=lambda kid: kid.country)
+        self.move_delayed_kids_to_beginning()
+
+    def move_delayed_kids_to_beginning(self) -> None:
+        for kid in self._kids:
+            if kid.is_delayed:
+                kid_to_move: Kid = kid
+                self._kids.remove(kid_to_move)
+                self._kids.insert(0, kid_to_move)
 
     @property    
     def orderlines(self) -> list[Orderline]:
@@ -107,23 +133,6 @@ class Day:
     
     def remove_line(self, orderline) -> None:
         self._orderlines.remove(orderline)
-    
-    def calculate_kids(self) -> None:
-        for address in self.addresses:
-            orderline_list: list[Orderline] = []
-            for orderline in self.orderlines:
-                if orderline.address == address:
-                    orderline_list.append(orderline)
-            self._kids.append(Kid(orderline_list))
-        self._kids.sort(key=lambda kid: kid.country)
-        self.move_delayed_kids_to_beginning()
-
-    def move_delayed_kids_to_beginning(self) -> None:
-        for kid in self._kids:
-            if kid.is_delayed:
-                kid_to_move: Kid = kid
-                self._kids.remove(kid_to_move)
-                self._kids.insert(0, kid_to_move)
 
     def get_day_report(self) -> str:
         day_report = Report.generate_day_head(self.weekday,

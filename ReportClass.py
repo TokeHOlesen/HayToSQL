@@ -114,7 +114,7 @@ class Report:
     def generate_header(start_date, end_date) -> str:
         return (f"""
         <div class="header">
-            <h1>Ugerapport for perioden {start_date} - {end_date}</h1>
+            <h1>Ugerapport for perioden {start_date.strftime("%d-%m-%Y")} - {end_date.strftime("%d-%m-%Y")}</h1>
         </div>
         """)
 
@@ -167,7 +167,7 @@ class Report:
                           order_list) -> str:
         return (f"""
         <div class="day">
-            <h2>{weekday} d. {date}</h2>
+            <h2>{weekday} d. {date.strftime("%d-%m-%Y")}</h2>
             <p><strong>Varer i alt:</strong> {items_total} (store ordrer: {items_in_big_orders_total}, små ordrer: {items_in_small_orders_total}).</p>
             <p><strong>Ca. ldm i alt:</strong> {round(ldm_total, 2)} ldm.</p>
             <p><strong>Ordrer i alt:</strong> {orders_total}.</p>
