@@ -8,7 +8,7 @@ from WeekClass import Week
 from SqlLoader import create_db_table, load_data_into_db
 
 SQL_DB_PATH: Path = Path(r"sqldb.db")
-EXCEL_FILE_PATH: Path = Path(r"pal16-20.xlsx")
+EXCEL_FILE_PATH: Path = Path(r"palcur.xlsx")
 
 
 def main():
@@ -58,7 +58,7 @@ def main():
     
     weekly_report: str = week.generate_report()
 
-    with open("report.html", "w", encoding="UTF-8") as outfile:
+    with open("report.html", "w", encoding="utf-8") as outfile:
         outfile.write(weekly_report)
 
     cursor.close()

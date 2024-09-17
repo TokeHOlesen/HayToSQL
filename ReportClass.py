@@ -64,6 +64,11 @@ class Report:
         .summary {
             font-size: 1.05em;
         }
+        .filter-values {
+            white-space: pre-wrap;
+            word-break: break-all;
+            line-height: 1.2;
+        }
         .blue-box {
             background-color: #E0F7FA;
             border-radius: 5px;
@@ -172,9 +177,9 @@ class Report:
             <p><strong>Ca. ldm i alt:</strong> {round(ldm_total, 2)} ldm.</p>
             <p><strong>Ordrer i alt:</strong> {orders_total}.</p>
             <p><strong>Konsoliderede ordregrupper i alt:</strong> {kids_total} (store: {big_orders_total}, små: {small_orders_total}) - {kids_in_pick_series} er sat i pluk.</p>
-            <p><strong>Ordrene har følgende bekræftelsesdatoer:</strong> {', '.join(dates)}.</p>
+            <p><strong>Ordrene har følgende bekræftelsesdatoer:</strong> {', '.join([date.strftime("%d-%m-%Y") for date in dates])}.</p>
             <p><strong>Destinationer:</strong> {', '.join(destinations)}.</p>
-            <p style="line-height: 1.2">{'|&#8203;'.join(order_list)}</p>
+            <p class="filter-values">{'|'.join(order_list)}</p>
         """)
 
     @staticmethod
@@ -221,8 +226,8 @@ class Report:
                 <p>{custname}, {city}, {country}.</p>
                 {f"<p>Plukserie: {pick_series}</p>" if pick_series else ""}
                 <p>{orders_total} {ordre_msg}, {items_total} {vare_msg}, ca. {round(ldm_total, 2)} ldm.</p>
-                <p>{ordre_dato_msg} er bekræftet til d.: {', '.join(confirmed_dates)}.</p>
-                <p>{'|&#8203;'.join(order_numbers)}</p>
+                <p>{ordre_dato_msg} er bekræftet til d.: {', '.join([date.strftime("%d-%m-%Y") for date in confirmed_dates])}.</p>
+                <p class="filter-values">{'|'.join(order_numbers)}</p>
             </div>
         """)
 

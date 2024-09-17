@@ -1,3 +1,5 @@
+from datetime import datetime
+
 class Orderline:
     """
     Each object of this class contains selected data from one order line, as well as some flags describing the order.
@@ -20,6 +22,10 @@ class Orderline:
          self.city,
          self.postcode,
          self.country) = sql_data
+
+        # Converts date string into a datetime object
+        self.date = datetime.strptime(self.date, "%Y-%m-%d")
+
         # Sets flags
         self.is_delayed: bool = False
         self.is_big: bool = False
