@@ -201,13 +201,13 @@ class Report:
                           dates,
                           destinations,
                           order_list,
-                          big_orders_dict,
+                          big_kids,
                           small_orders_list) -> str:
 
-        big_orders = "<p><strong>Store ordrer:</strong></p>" if big_orders_dict else ""
-        for custname in big_orders_dict:
+        big_orders = "<p><strong>Store ordrer:</strong></p>" if big_kids else ""
+        for kid in big_kids:
             big_orders += f"""
-            <p class="big-order-box"><strong>{custname}</strong>: {'|'.join(big_orders_dict[custname])}</p>"""
+            <p class="big-order-box"><strong>{kid.custname} ({kid.number_of_items} stk, ca. {round(kid.ldm, 2)} ldm):</strong> {'|'.join(kid.ordernumbers)}</p>"""
 
         small_orders = "<p><strong>Små ordrer:</strong></p>" if small_orders_list else ""
         small_orders += f"""

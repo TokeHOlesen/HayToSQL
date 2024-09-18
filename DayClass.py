@@ -117,8 +117,8 @@ class Day:
         return [ordernumber for kid in self.kids for ordernumber in kid.ordernumbers]
 
     @property
-    def big_ordernumbers(self) -> dict[str, set]:
-        return {kid.custname: kid.ordernumbers for kid in self.kids if kid.is_big}
+    def big_kids(self) -> list[Kid]:
+        return [kid for kid in self.kids if kid.is_big]
 
     @property
     def small_ordernumbers(self) -> list:
@@ -157,7 +157,7 @@ class Day:
                                               self.dates,
                                               self.countries,
                                               self.all_ordernumbers,
-                                              self.big_ordernumbers,
+                                              self.big_kids,
                                               self.small_ordernumbers)
 
         for i, kid in enumerate(self.kids):
