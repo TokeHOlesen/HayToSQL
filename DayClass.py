@@ -117,6 +117,14 @@ class Day:
         return [ordernumber for kid in self.kids for ordernumber in kid.ordernumbers]
 
     @property
+    def big_ordernumbers(self) -> dict[str, set]:
+        return {kid.custname: kid.ordernumbers for kid in self.kids if kid.is_big}
+
+    @property
+    def small_ordernumbers(self) -> list:
+        return [ordernumber for kid in self.kids for ordernumber in kid.ordernumbers if not kid.is_big]
+
+    @property
     def countries(self) -> list[str]:
         return sorted(list({orderline.country for orderline in self.orderlines}))
     
@@ -148,8 +156,9 @@ class Day:
                                               self.kids_in_pick_series,
                                               self.dates,
                                               self.countries,
-                                              self.all_ordernumbers
-                                              )
+                                              self.all_ordernumbers,
+                                              self.big_ordernumbers,
+                                              self.small_ordernumbers)
 
         for i, kid in enumerate(self.kids):
             day_report += Report.generate_kid(i + 1,

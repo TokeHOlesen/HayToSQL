@@ -8,7 +8,7 @@ from WeekClass import Week
 from SqlLoader import create_db_table, load_data_into_db
 
 SQL_DB_PATH: Path = Path(r"sqldb.db")
-EXCEL_FILE_PATH: Path = Path(r"palcur.xlsx")
+EXCEL_FILE_PATH: Path = Path(r"pal23-27.xlsx")
 
 
 def main():

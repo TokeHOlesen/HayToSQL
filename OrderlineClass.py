@@ -1,5 +1,6 @@
 from datetime import datetime
 
+
 class Orderline:
     """
     Each object of this class contains selected data from one order line, as well as some flags describing the order.

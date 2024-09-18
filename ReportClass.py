@@ -64,7 +64,38 @@ class Report:
         .summary {
             font-size: 1.05em;
         }
-        .filter-values {
+        .big-order-box {
+            background-color: #F0F9FF;
+            border-radius: 3px;
+            padding: 10px 10px;
+            margin-bottom: 20px;
+            margin-left: 20px;
+            border: 2px solid #D0EFFF;
+            display: block;
+            width: fit-content;
+        }
+        .small-order-box {
+            background-color: #F0F9FF;
+            border-radius: 3px;
+            padding: 10px 10px;
+            margin-bottom: 20px;
+            margin-left: 20px;
+            border: 2px solid #D0EFFF;
+            display: block;
+            width: fit-content;
+            white-space: pre-wrap;
+            word-break: break-all;
+            line-height: 1.2;
+        }
+        .all-order-box {
+            background-color: #F0F9FF;
+            border-radius: 3px;
+            padding: 10px 10px;
+            margin-bottom: 20px;
+            margin-left: 20px;
+            border: 2px solid #D0EFFF;
+            display: block;
+            width: fit-content;
             white-space: pre-wrap;
             word-break: break-all;
             line-height: 1.2;
@@ -169,17 +200,32 @@ class Report:
                           kids_in_pick_series,
                           dates,
                           destinations,
-                          order_list) -> str:
+                          order_list,
+                          big_orders_dict,
+                          small_orders_list) -> str:
+
+        big_orders = "<p><strong>Store ordrer:</strong></p>" if big_orders_dict else ""
+        for custname in big_orders_dict:
+            big_orders += f"""
+            <p class="big-order-box"><strong>{custname}</strong>: {'|'.join(big_orders_dict[custname])}</p>"""
+
+        small_orders = "<p><strong>Små ordrer:</strong></p>" if small_orders_list else ""
+        small_orders += f"""
+            <p class="small-order-box">{'|'.join(small_orders_list)}</p>"""
+
         return (f"""
         <div class="day">
             <h2>{weekday} d. {date.strftime("%d-%m-%Y")}</h2>
-            <p><strong>Varer i alt:</strong> {items_total} (store ordrer: {items_in_big_orders_total}, små ordrer: {items_in_small_orders_total}).</p>
+            <p><strong>Varer i alt:</strong> {items_total} (i store ordrer: {items_in_big_orders_total}, i små ordrer: {items_in_small_orders_total}).</p>
             <p><strong>Ca. ldm i alt:</strong> {round(ldm_total, 2)} ldm.</p>
             <p><strong>Ordrer i alt:</strong> {orders_total}.</p>
             <p><strong>Konsoliderede ordregrupper i alt:</strong> {kids_total} (store: {big_orders_total}, små: {small_orders_total}) - {kids_in_pick_series} er sat i pluk.</p>
             <p><strong>Ordrene har følgende bekræftelsesdatoer:</strong> {', '.join([date.strftime("%d-%m-%Y") for date in dates])}.</p>
             <p><strong>Destinationer:</strong> {', '.join(destinations)}.</p>
-            <p class="filter-values">{'|'.join(order_list)}</p>
+            {big_orders}
+            {small_orders}
+            <p><strong>Alle ordrer:</strong></p>
+            <p class="all-order-box">{'|'.join(order_list)}</p>
         """)
 
     @staticmethod
