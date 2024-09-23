@@ -117,6 +117,10 @@ class Day:
         return [ordernumber for kid in self.kids for ordernumber in kid.ordernumbers]
 
     @property
+    def hay_direct_kids(self) -> list[Kid]:
+        return [kid for kid in self.kids if kid.is_hay_direct]
+
+    @property
     def big_kids(self) -> list[Kid]:
         return [kid for kid in self.kids if kid.is_big]
 
@@ -157,6 +161,7 @@ class Day:
                                               self.dates,
                                               self.countries,
                                               self.all_ordernumbers,
+                                              self.hay_direct_kids,
                                               self.big_kids,
                                               self.small_ordernumbers)
 

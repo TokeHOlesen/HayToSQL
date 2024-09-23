@@ -1,6 +1,18 @@
 from OrderlineClass import Orderline
 
 
+class Item:
+    def __init__(self,
+                 item_number: str,
+                 item_name: str,
+                 item_color: str,
+                 number: int):
+        self.item_number = item_number
+        self.item_name = item_name
+        self.item_color = item_color
+        self.number = number
+
+
 class Kid:
     """
     Each object of this class contains information about a group of orders that share a delivery address and can be
@@ -32,6 +44,8 @@ class Kid:
         self.is_delayed: bool = False
         self.is_hay_direct: bool = False
 
+        self.all_items: list[Item] = []
+
         for orderline in orderline_list:
             self.dates.add(orderline.date)
             self.ordernumbers.add(orderline.ordernumber)
@@ -41,6 +55,15 @@ class Kid:
             self.is_moved_back = orderline.is_moved_back if orderline.is_moved_back else self.is_moved_back
             self.is_hay_direct = orderline.is_hay_direct if orderline.is_hay_direct else self.is_hay_direct
             self.is_delayed = orderline.is_delayed if orderline.is_delayed else self.is_delayed
+
+            for item in self.all_items:
+                if item.item_number == orderline.itemnumber:
+                    item.number += orderline.number_of_items
+            else:
+                self.all_items.append(Item(orderline.itemnumber,
+                                           orderline.itemname,
+                                           orderline.color,
+                                           orderline.number_of_items))
 
         self.is_big = (self.number_of_items >= self.BIG_ORDER)
 

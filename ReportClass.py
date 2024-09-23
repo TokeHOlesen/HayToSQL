@@ -57,45 +57,30 @@ class Report:
             line-height: 0.8;
             border-left: 3px solid lightblue;
             position: relative;
+            display: none;
         }
-        .kid:first-child {
-            margin-top: 0;
+        .day.show-orders .kid {
+            display: block;
         }
         .summary {
             font-size: 1.05em;
         }
         .big-order-box {
-            background-color: #F0F9FF;
-            border-radius: 3px;
-            padding: 10px 10px;
             margin-bottom: 20px;
-            margin-left: 20px;
-            border: 2px solid #D0EFFF;
+            margin-left: 42px;
             display: block;
             width: fit-content;
         }
         .small-order-box {
-            background-color: #F0F9FF;
-            border-radius: 3px;
-            padding: 10px 10px;
             margin-bottom: 20px;
-            margin-left: 20px;
-            border: 2px solid #D0EFFF;
-            display: block;
-            width: fit-content;
+            margin-left: 42px;
             white-space: pre-wrap;
             word-break: break-all;
             line-height: 1.2;
         }
         .all-order-box {
-            background-color: #F0F9FF;
-            border-radius: 3px;
-            padding: 10px 10px;
             margin-bottom: 20px;
-            margin-left: 20px;
-            border: 2px solid #D0EFFF;
-            display: block;
-            width: fit-content;
+            margin-left: 42px;
             white-space: pre-wrap;
             word-break: break-all;
             line-height: 1.2;
@@ -139,6 +124,22 @@ class Report:
             margin: 2px;
             border: 1px solid #80CBC4;
             display: inline-block;
+        }
+        button {
+            padding: 5px 10px;
+            font-size: 1em;
+            background-color: #E0E0E0;
+            color: #333;
+            border: 1px solid #B0B0B0;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #D0D0D0;
+        }
+        button:active {
+            background-color: #BEBEBE;
+            transform: translateY(2px);
         }
     </style>
 </head>
@@ -201,19 +202,29 @@ class Report:
                           dates,
                           destinations,
                           order_list,
+                          hay_direct_kids,
                           big_kids,
                           small_orders_list) -> str:
+
+        hay_direct_orders = "<p><strong>Store ordrer:</strong></p>" if hay_direct_kids else ""
+        for kid in hay_direct_kids:
+            hay_direct_orders += f"""
+            <p class="big-order-box"><strong>{kid.custname} ({kid.number_of_items} stk, ca. {round(kid.ldm, 2)} ldm):</strong> {'|'.join(kid.ordernumbers)}</p>
+         """
 
         big_orders = "<p><strong>Store ordrer:</strong></p>" if big_kids else ""
         for kid in big_kids:
             big_orders += f"""
-            <p class="big-order-box"><strong>{kid.custname} ({kid.number_of_items} stk, ca. {round(kid.ldm, 2)} ldm):</strong> {'|'.join(kid.ordernumbers)}</p>"""
+            <p class="big-order-box"><strong>{kid.custname} ({kid.number_of_items} stk, ca. {round(kid.ldm, 2)} ldm):</strong> {'|'.join(kid.ordernumbers)}</p>
+        """
 
         small_orders = "<p><strong>Små ordrer:</strong></p>" if small_orders_list else ""
         small_orders += f"""
-            <p class="small-order-box">{'|'.join(small_orders_list)}</p>"""
+            <p class="small-order-box">{'|'.join(small_orders_list)}</p>
+        """
 
-        return (f"""
+        if items_total > 0:
+            return (f"""
         <div class="day">
             <h2>{weekday} d. {date.strftime("%d-%m-%Y")}</h2>
             <p><strong>Varer i alt:</strong> {items_total} (i store ordrer: {items_in_big_orders_total}, i små ordrer: {items_in_small_orders_total}).</p>
@@ -222,10 +233,17 @@ class Report:
             <p><strong>Konsoliderede ordregrupper i alt:</strong> {kids_total} (store: {big_orders_total}, små: {small_orders_total}) - {kids_in_pick_series} er sat i pluk.</p>
             <p><strong>Ordrene har følgende bekræftelsesdatoer:</strong> {', '.join([date.strftime("%d-%m-%Y") for date in dates])}.</p>
             <p><strong>Destinationer:</strong> {', '.join(destinations)}.</p>
+            {hay_direct_orders}
             {big_orders}
             {small_orders}
             <p><strong>Alle ordrer:</strong></p>
             <p class="all-order-box">{'|'.join(order_list)}</p>
+            <button onclick="toggleOrders(this)">Vis / skjul KID'er</button>
+        """)
+        return (f"""
+        <div class="day">
+            <h2>{weekday} d. {date.strftime("%d-%m-%Y")}</h2>
+            <p>Der er ingen ordrer til denne dag eller det hele er allerede blevet pakket.</p>
         """)
 
     @staticmethod
@@ -281,6 +299,12 @@ class Report:
     def generate_html_tail() -> str:
         return ("""
     </div>
+    <script>
+        function toggleOrders(button) {
+            const dayDiv = button.closest('.day');
+            dayDiv.classList.toggle('show-orders');
+        }
+    </script>
 </body>
 </html>
         """)
