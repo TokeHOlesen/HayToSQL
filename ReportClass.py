@@ -51,7 +51,7 @@ class Report:
         }
         .kid {
             background-color: #F9F9F9;
-            padding: 5px 10px;
+            padding: 5px 10px 20px 10px;
             margin-top: 10px;
             padding-left: 40px;
             line-height: 0.8;
@@ -59,7 +59,7 @@ class Report:
             position: relative;
             display: none;
         }
-        .day.show-orders .kid {
+        .day.show-kids .kid {
             display: block;
         }
         .summary {
@@ -140,6 +140,37 @@ class Report:
         button:active {
             background-color: #BEBEBE;
             transform: translateY(2px);
+        }
+        .order_contents {
+            padding: 32px 10px 0px 10px;
+            font-size: 0.9em;
+            padding-left: 80px;
+            display: none;
+        }
+        .order_contents table {
+            border-collapse: collapse;
+            margin-bottom: 10px;
+        }
+        .order_contents td, th {
+            padding: 8px 15px;
+            vertical-align: top;
+            font-size: 0.9em;
+            color: #333;
+            border: 1px solid #E0E0E0;
+        }
+        .order_contents tr:nth-child(even) {
+            background-color: #EAEAEA;
+        }
+        .order_contents tr:nth-child(odd) {
+            background-color: #F9F9F9;
+        }
+        .order_contents th {
+            background-color: #D0D0D0;
+            font-weight: bold;
+            text-align: left;
+        }
+        .kid.show-order-contents .order_contents {
+            display: block;
         }
     </style>
 </head>
@@ -238,7 +269,7 @@ class Report:
             {small_orders}
             <p><strong>Alle ordrer:</strong></p>
             <p class="all-order-box">{'|'.join(order_list)}</p>
-            <button onclick="toggleOrders(this)">Vis / skjul KID'er</button>
+            <button onclick="toggleKids(this)">Vis / skjul KID'er</button>
         """)
         return (f"""
         <div class="day">
@@ -266,7 +297,8 @@ class Report:
                      is_moved_back,
                      is_delayed,
                      is_hay_direct,
-                     is_big) -> str:
+                     is_big,
+                     all_items) -> str:
         ordre_dato_msg, ordre_msg = ("Ordren", "ordre") if orders_total == 1 else ("Ordrerne", "ordrer")
         vare_msg = "vare" if items_total == 1 else "varer"
 
@@ -283,6 +315,17 @@ class Report:
             tags.append('<p class="blue-box">Stor ordre</p>')
         all_tags = "\n                ".join(tags)
 
+        order_contents_rows = ""
+        for item in all_items:
+            order_contents_rows += (f"""
+                    <tr>
+                        <td>{item.item_number}</td>
+                        <td>{item.item_name}</td>
+                        <td>{item.item_color}</td>
+                        <td>{item.number}</td>
+                    </tr>
+            """)
+
         return (f"""
             <div class="kid">
                 <h3>Konsolideret ordregruppe nr. {kid_number}:</h3>
@@ -292,7 +335,19 @@ class Report:
                 <p>{orders_total} {ordre_msg}, {items_total} {vare_msg}, ca. {round(ldm_total, 2)} ldm.</p>
                 <p>{ordre_dato_msg} er bekræftet til d.: {', '.join([date.strftime("%d-%m-%Y") for date in confirmed_dates])}.</p>
                 <p class="filter-values">{'|'.join(order_numbers)}</p>
-            </div>
+                <button onclick="toggleOrderContents(this)">Vis / skjul indhold</button>
+                <div class="order_contents">
+                    <table>
+                        <tr>
+                            <th style="width: 150px;">Varenummer</th>
+                            <th style="width: 300px;">Navn</th>
+                            <th style="width: 130px;">Farve</th>
+                            <th style="width: 50px;">Antal</th>
+                        </tr>
+                        {order_contents_rows}
+                    </table>
+                </div>    
+            </div>        
         """)
 
     @staticmethod
@@ -300,9 +355,17 @@ class Report:
         return ("""
     </div>
     <script>
-        function toggleOrders(button) {
+        // toggles visibility of individual KID elements
+        function toggleKids(button) {
             const dayDiv = button.closest('.day');
-            dayDiv.classList.toggle('show-orders');
+            dayDiv.classList.toggle('show-kids');
+        }
+    </script>
+    <script>
+        // toggles visibility of contents of individual divs
+        function toggleOrderContents(button) {
+            const kidDiv = button.closest('.kid');
+            kidDiv.classList.toggle('show-order-contents');
         }
     </script>
 </body>

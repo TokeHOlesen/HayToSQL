@@ -179,7 +179,8 @@ class Day:
                                               kid.is_moved_back,
                                               kid.is_delayed,
                                               kid.is_hay_direct,
-                                              kid.is_big)
+                                              kid.is_big,
+                                              kid.all_items)
 
         day_report += Report.generate_day_tail()
         return day_report
