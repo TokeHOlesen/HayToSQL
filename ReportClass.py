@@ -127,6 +127,7 @@ class Report:
         }
         button {
             padding: 5px 10px;
+            width: 160px;
             font-size: 1em;
             background-color: #E0E0E0;
             color: #333;
@@ -269,7 +270,7 @@ class Report:
             {small_orders}
             <p><strong>Alle ordrer:</strong></p>
             <p class="all-order-box">{'|'.join(order_list)}</p>
-            <button onclick="toggleKids(this)">Vis / skjul KID'er</button>
+            <button onclick="toggleKids(this)">Vis KID'er</button>
         """)
         return (f"""
         <div class="day">
@@ -335,7 +336,7 @@ class Report:
                 <p>{orders_total} {ordre_msg}, {items_total} {vare_msg}, ca. {round(ldm_total, 2)} ldm.</p>
                 <p>{ordre_dato_msg} er bekræftet til d.: {', '.join([date.strftime("%d-%m-%Y") for date in confirmed_dates])}.</p>
                 <p class="filter-values">{'|'.join(order_numbers)}</p>
-                <button onclick="toggleOrderContents(this)">Vis / skjul indhold</button>
+                <button onclick="toggleOrderContents(this)">Vis varer</button>
                 <div class="order_contents">
                     <table>
                         <tr>
@@ -359,13 +360,25 @@ class Report:
         function toggleKids(button) {
             const dayDiv = button.closest('.day');
             dayDiv.classList.toggle('show-kids');
+            
+            if (dayDiv.classList.contains('show-kids')) {
+                button.textContent = "Skjul KID'er";
+            } else {
+                button.textContent = "Vis KID'er";
+            }
         }
     </script>
     <script>
-        // toggles visibility of contents of individual divs
+        // toggles visibility of items on this KID
         function toggleOrderContents(button) {
             const kidDiv = button.closest('.kid');
             kidDiv.classList.toggle('show-order-contents');
+            
+            if (kidDiv.classList.contains('show-order-contents')) {
+                button.textContent = "Skjul varer";
+            } else {
+                button.textContent = "Vis varer";
+            }
         }
     </script>
 </body>
