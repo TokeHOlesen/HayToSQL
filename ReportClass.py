@@ -160,10 +160,10 @@ class Report:
             border: 1px solid #E0E0E0;
         }
         .order_contents tr:nth-child(even) {
-            background-color: #EAEAEA;
+            background-color: #F9F9F9;
         }
         .order_contents tr:nth-child(odd) {
-            background-color: #F9F9F9;
+            background-color: #EAEAEA;
         }
         .order_contents th {
             background-color: #D0D0D0;
