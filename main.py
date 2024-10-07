@@ -1,11 +1,12 @@
-import pandas
 import pandas as pd
 import sqlite3
 import sys
 from pathlib import Path
+from PyQt6.QtWidgets import QApplication
 
-from WeekClass import Week
+from MainWIndowClass import MainWindow
 from SqlLoader import create_db_table, load_data_into_db
+from WeekClass import Week
 
 temp_input_excel_path: Path = Path(r"palnext.xlsx")
 temp_output_html_path: Path = Path(r"")
@@ -13,7 +14,11 @@ temp_sql_output_path: Path = Path(r"sqldb.db")
 
 
 def main():
-    generate_report(temp_input_excel_path, temp_output_html_path, temp_sql_output_path)
+    app = QApplication([])
+    window = MainWindow()
+    window.show()
+    # generate_report(temp_input_excel_path, temp_output_html_path, temp_sql_output_path)
+    app.exec()
 
 
 def generate_report(input_path: Path,
@@ -47,10 +52,10 @@ def generate_report(input_path: Path,
     close_db_connection(cursor, connection)
 
 
-def create_dataframe(input_path: Path) -> pandas.DataFrame:
+def create_dataframe(input_path: Path) -> pd.DataFrame:
     # TODO: exceptions
     # noinspection PyTypeChecker
-    df: pandas.DataFrame = pd.read_excel(input_path, usecols=[
+    df: pd.DataFrame = pd.read_excel(input_path, usecols=[
         "Plukserie (ordrelinje)",
         "Varenummer", "Beskrivelse",
         "Antal3",
