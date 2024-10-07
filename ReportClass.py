@@ -238,7 +238,7 @@ class Report:
                           big_kids,
                           small_orders_list) -> str:
 
-        hay_direct_orders = "<p><strong>Store ordrer:</strong></p>" if hay_direct_kids else ""
+        hay_direct_orders = "<p><strong>Hay-Direct ordrer:</strong></p>" if hay_direct_kids else ""
         for kid in hay_direct_kids:
             hay_direct_orders += f"""
             <p class="big-order-box"><strong>{kid.custname} ({kid.number_of_items} stk, ca. {round(kid.ldm, 2)} ldm):</strong> {'|'.join(kid.ordernumbers)}</p>
@@ -306,14 +306,14 @@ class Report:
         tags = []
         if is_delayed:
             tags.append('<p class="red-box">Forsinkelsesrisiko: ordren skal rykkes til ugen før</p>')
-        if pick_series:
-            tags.append('<p class="green-box">Er sat i pluk</p>')
         if is_hay_direct:
             tags.append('<p class="yellow-box">Hay-Direct ordre</p>')
         if is_moved_back and not is_delayed:
             tags.append('<p class="purple-box">Rykket frem for at matche leveringsdatoen for dette land</p>')
         if is_big:
             tags.append('<p class="blue-box">Stor ordre</p>')
+        if pick_series:
+            tags.append('<p class="green-box">Er sat i pluk</p>')
         all_tags = "\n                ".join(tags)
 
         order_contents_rows = ""
