@@ -1,6 +1,9 @@
-from PyQt6.QtWidgets import QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QLineEdit, QPushButton
+from pathlib import Path
+from PyQt6.QtWidgets import QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QLineEdit, QPushButton, QFileDialog
 from PyQt6.QtGui import QGuiApplication
 from PyQt6.QtCore import Qt
+
+from DataProcessing import generate_and_save_report
 
 
 class MainWindow(QMainWindow):
@@ -28,19 +31,25 @@ class MainWindow(QMainWindow):
         output_layout.setSpacing(10)
 
         self.input_path_line_edit = QLineEdit()
-        self.input_path_line_edit.setPlaceholderText("Input fil (.xlsx)")
+        self.input_path_line_edit.setPlaceholderText("Input (.xlsx)")
 
         self.browse_input_path_button = QPushButton("Gennemse")
         self.browse_input_path_button.setFixedWidth(80)
 
+        self.browse_input_path_button.clicked.connect(self.browse_input_file)
+
         self.output_path_line_edit = QLineEdit()
-        self.output_path_line_edit.setPlaceholderText("Output fil (.html)")
+        self.output_path_line_edit.setPlaceholderText("Output (.html)")
 
         self.browse_output_path_button = QPushButton("Gennemse")
         self.browse_output_path_button.setFixedWidth(80)
 
+        self.browse_output_path_button.clicked.connect(self.browse_output_file)
+
         self.start_button = QPushButton("Start")
         self.start_button.setFixedWidth(60)
+
+        self.start_button.clicked.connect(self.generate_report)
 
         input_layout.addWidget(self.input_path_line_edit)
         input_layout.addWidget(self.browse_input_path_button, alignment=Qt.AlignmentFlag.AlignLeft)
@@ -52,3 +61,21 @@ class MainWindow(QMainWindow):
         main_layout.addWidget(self.start_button, alignment=Qt.AlignmentFlag.AlignCenter)
 
         central_widget.setLayout(main_layout)
+
+    def browse_input_file(self):
+        file_name, _ = QFileDialog.getOpenFileName(self, "Vælg input fil", "",
+                                                   "Excel Filer (*.xlsx);;Alle Filer (*)")
+        if file_name:
+            self.input_path_line_edit.setText(file_name)
+
+    def browse_output_file(self):
+        file_name, _ = QFileDialog.getSaveFileName(self, "Vælg output fil", "Ugerapport.html",
+                                                   "HTML Filer (*.html);;Alle Filer (*)")
+        if file_name:
+            self.output_path_line_edit.setText(file_name)
+
+    def generate_report(self):
+        input_path = Path(self.input_path_line_edit.text())
+        output_path = Path(self.output_path_line_edit.text())
+        if input_path and output_path:
+            generate_and_save_report(input_path, output_path)
