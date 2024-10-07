@@ -4,3 +4,5 @@ sqldb.db
 report.txt
 report_reference.txt
 Ugerapport*
+.idea/
+__pycache__/
