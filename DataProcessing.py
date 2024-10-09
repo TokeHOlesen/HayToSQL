@@ -3,9 +3,23 @@ import sqlite3
 import sys
 
 from datetime import datetime
-
 from pathlib import Path
+from PyQt6.QtCore import QThread, pyqtSignal
+
 from WeekClass import Week
+
+
+class ReportGeneratorThread(QThread):
+    finished = pyqtSignal()
+
+    def __init__(self, input_path: Path, output_path: Path):
+        super().__init__()
+        self.input_path: Path = input_path
+        self.output_path: Path = output_path
+
+    def run(self):
+        generate_and_save_report(self.input_path, self.output_path)
+        self.finished.emit()
 
 
 def generate_and_save_report(input_path: Path, output_path: Path):

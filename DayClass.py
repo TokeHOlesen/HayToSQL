@@ -7,7 +7,7 @@ from ReportClass import Report
 
 class Day:
     """
-    Objects of this class have two list fields: ._orderlines and .kids.
+    Objects of this class have two list fields: ._orderlines and ._kids.
     ._orderlines contains all the orderlines that must be shipped on this day. This includes orderlines with dates not
     equal to the Day's date, but grouped together because they share the delivery address. These will be grouped
     by address and used to contruct Kid objects with .calculate_kids().

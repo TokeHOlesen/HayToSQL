@@ -3,13 +3,13 @@ from PyQt6.QtWidgets import QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QLin
 from PyQt6.QtGui import QGuiApplication
 from PyQt6.QtCore import Qt
 
-from DataProcessing import generate_and_save_report
+from DataProcessing import ReportGeneratorThread
 
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Palissade Ugerapport Generator")
+        self.setWindowTitle("Palissade Ugerapportgenerator")
         self.setFixedSize(400, 134)
         screen = QGuiApplication.primaryScreen().geometry()
         center_pos_x = (screen.width() - self.width()) // 2
@@ -78,4 +78,10 @@ class MainWindow(QMainWindow):
         input_path = Path(self.input_path_line_edit.text())
         output_path = Path(self.output_path_line_edit.text())
         if input_path and output_path:
-            generate_and_save_report(input_path, output_path)
+            self.thread = ReportGeneratorThread(input_path, output_path)
+            self.thread.finished.connect(self.on_report_generation_finished)
+            self.thread.start()
+
+    def on_report_generation_finished(self):
+        # Placeholder
+        print("Done.")
