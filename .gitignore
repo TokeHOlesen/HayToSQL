@@ -6,3 +6,7 @@ report_reference.txt
 Ugerapport*
 .idea/
 __pycache__/
+build/
+dist/
+main.spec
+
