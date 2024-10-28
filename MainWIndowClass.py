@@ -79,9 +79,4 @@ class MainWindow(QMainWindow):
         output_path = Path(self.output_path_line_edit.text())
         if input_path and output_path:
             self.thread = ReportGeneratorThread(input_path, output_path)
-            self.thread.finished.connect(self.on_report_generation_finished)
             self.thread.start()
-
-    def on_report_generation_finished(self):
-        # Placeholder
-        print("Done.")

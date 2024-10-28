@@ -244,9 +244,10 @@ class Report:
             <p class="big-order-box"><strong>{kid.custname} ({kid.number_of_items} stk, ca. {round(kid.ldm, 2)} ldm):</strong> {'|'.join(kid.ordernumbers)}</p>
          """
 
-        big_orders = "<p><strong>Store ordrer:</strong></p>" if big_kids else ""
+        big_orders = "<p><strong>Store ordrer:</strong></p>" if big_kids and not big_kids == hay_direct_kids else ""
         for kid in big_kids:
-            big_orders += f"""
+            if kid not in hay_direct_kids:
+                big_orders += f"""
             <p class="big-order-box"><strong>{kid.custname} ({kid.number_of_items} stk, ca. {round(kid.ldm, 2)} ldm):</strong> {'|'.join(kid.ordernumbers)}</p>
         """
 
