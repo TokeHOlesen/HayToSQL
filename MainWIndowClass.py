@@ -12,7 +12,7 @@ from PyQt6.QtGui import QGuiApplication
 from PyQt6.QtCore import Qt
 
 from DataProcessing import ReportGeneratorThread
-from popup_messagebox import show_popup
+from popup_messagebox import display_popup
 
 
 class MainWindow(QMainWindow):
@@ -100,13 +100,27 @@ class MainWindow(QMainWindow):
             self.keep_sql_file = False
 
     def generate_report(self):
-        input_path = Path(self.input_path_line_edit.text())
-        output_path = Path(self.output_path_line_edit.text())
-        if input_path and output_path:
-            self.thread = ReportGeneratorThread(input_path, output_path, self.keep_sql_file)
-            self.thread.finished.connect(self.show_finished_popup)
-            self.thread.start()
+        input_path_string = self.input_path_line_edit.text()
+        output_path_string = self.output_path_line_edit.text()
+        try:
+            input_path = Path(input_path_string)
+            if not input_path.exists() or input_path_string == "":
+                raise ValueError
+        except ValueError:
+            display_popup("Fejl", "Inputstien er ugyldig, eller den angivne fil findes ikke.", "warning")
+            return
+        try:
+            output_path = Path(output_path_string)
+            if not output_path.parent.exists() or output_path_string == "":
+                raise ValueError
+        except ValueError:
+            display_popup("Fejl", "Outputstien er ugyldig.", "warning")
+            return
+
+        self.thread = ReportGeneratorThread(input_path, output_path, self.keep_sql_file)
+        self.thread.finished.connect(self.show_finished_popup)
+        self.thread.start()
 
     @staticmethod
     def show_finished_popup():
-        show_popup("Færdig", "Rapporten er dannet.", "information")
+        display_popup("Færdig", "Rapporten er dannet.", "information")

@@ -7,7 +7,7 @@ from pathlib import Path
 from PyQt6.QtCore import QThread, pyqtSignal
 
 from WeekClass import Week
-from popup_messagebox import show_popup
+from popup_messagebox import display_popup
 
 
 class ReportGeneratorThread(QThread):
@@ -47,8 +47,15 @@ def generate_and_save_report(input_path: Path, output_path: Path, keep_sql_file:
     weekly_report: str = week.generate_report()
 
     # Saves the output file
-    with open(output_path, "w", encoding="utf-8") as outfile:
-        outfile.write(weekly_report)
+    try:
+        with open(output_path, "w", encoding="utf-8") as outfile:
+            outfile.write(weekly_report)
+    except PermissionError:
+        display_popup("Fejl", "Filen kan ikke skrives pga. manglede rettigheder.", "warning")
+        return
+    except OSError as e:
+        display_popup("Fejl", f"Filen kan ikke skrives:\n{e}", "warning")
+        return
 
     # Closes the connection to the database
     close_db_connection(cursor, connection)
@@ -57,9 +64,9 @@ def generate_and_save_report(input_path: Path, output_path: Path, keep_sql_file:
         try:
             sql_output_path.unlink()
         except PermissionError:
-            show_popup("Fejl", "SQL-filen kan ikke slettes - mangler rettigheder.", "warning")
+            display_popup("Fejl", "SQL-filen kan ikke slettes - mangler rettigheder.", "warning")
         except Exception as e:
-            show_popup("Fejl", f"Der er opstået en fejl ved sletning af databasefilen:\n{e}", "warning")
+            display_popup("Fejl", f"Der er opstået en fejl ved sletning af databasefilen:\n{e}", "warning")
 
 
 def create_dataframe(input_path: Path) -> pd.DataFrame:
