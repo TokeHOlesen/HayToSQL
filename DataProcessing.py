@@ -12,17 +12,18 @@ from WeekClass import Week
 class ReportGeneratorThread(QThread):
     finished = pyqtSignal()
 
-    def __init__(self, input_path: Path, output_path: Path):
+    def __init__(self, input_path: Path, output_path: Path, keep_sql_file: bool):
         super().__init__()
         self.input_path: Path = input_path
         self.output_path: Path = output_path
+        self.keep_sql_file = keep_sql_file
 
     def run(self):
-        generate_and_save_report(self.input_path, self.output_path)
+        generate_and_save_report(self.input_path, self.output_path, self.keep_sql_file)
         self.finished.emit()
 
 
-def generate_and_save_report(input_path: Path, output_path: Path):
+def generate_and_save_report(input_path: Path, output_path: Path, keep_sql_file: bool):
 
     # Sets the sql output path to the same directory as the html output
     sql_output_path = output_path.parent / "sqldb.db"
@@ -50,6 +51,16 @@ def generate_and_save_report(input_path: Path, output_path: Path):
 
     # Closes the connection to the database
     close_db_connection(cursor, connection)
+
+    if not keep_sql_file:
+        try:
+            sql_output_path.unlink()
+        except FileNotFoundError:
+            pass
+        except PermissionError:
+            pass
+        except Exception as e:
+            pass
 
 
 def create_dataframe(input_path: Path) -> pd.DataFrame:
