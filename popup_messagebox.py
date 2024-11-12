@@ -8,7 +8,7 @@ def show_popup(title: str, message: str, icon: str) -> None:
     message_box = QMessageBox()
     message_box.setWindowTitle(title)
     message_box.setText(message)
-    message_box.setWindowIcon(QIcon("Data/barcode-scan.ico"))
+    message_box.setWindowIcon(QIcon("report-icon.ico"))
     ok_button = message_box.addButton(QMessageBox.StandardButton.Ok)
     ok_button.setFixedSize(QSize(80, 20))
     match icon:

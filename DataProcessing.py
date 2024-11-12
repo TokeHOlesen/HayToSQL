@@ -7,6 +7,7 @@ from pathlib import Path
 from PyQt6.QtCore import QThread, pyqtSignal
 
 from WeekClass import Week
+from popup_messagebox import show_popup
 
 
 class ReportGeneratorThread(QThread):
@@ -55,12 +56,10 @@ def generate_and_save_report(input_path: Path, output_path: Path, keep_sql_file:
     if not keep_sql_file:
         try:
             sql_output_path.unlink()
-        except FileNotFoundError:
-            pass
         except PermissionError:
-            pass
+            show_popup("Fejl", "SQL-filen kan ikke slettes - mangler rettigheder.", "warning")
         except Exception as e:
-            pass
+            show_popup("Fejl", f"Der er opstået en fejl ved sletning af databasefilen:\n{e}", "warning")
 
 
 def create_dataframe(input_path: Path) -> pd.DataFrame:
