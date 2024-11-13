@@ -16,6 +16,8 @@ def display_popup(title: str, message: str, icon: str) -> None:
             message_box.setIcon(QMessageBox.Icon.Warning)
         case "information":
             message_box.setIcon(QMessageBox.Icon.Information)
+        case "critical":
+            message_box.setIcon(QMessageBox.Icon.Critical)
         case _:
             message_box.setIcon(QMessageBox.Icon.NoIcon)
     message_box.exec()

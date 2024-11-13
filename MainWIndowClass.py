@@ -118,8 +118,13 @@ class MainWindow(QMainWindow):
             return
 
         self.thread = ReportGeneratorThread(input_path, output_path, self.keep_sql_file)
+        self.thread.error.connect(self.show_error_popup)
         self.thread.finished.connect(self.show_finished_popup)
         self.thread.start()
+
+    @staticmethod
+    def show_error_popup(message: str):
+        display_popup("Fejl", message, "critical")
 
     @staticmethod
     def show_finished_popup():
