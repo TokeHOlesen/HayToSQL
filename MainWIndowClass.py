@@ -94,10 +94,7 @@ class MainWindow(QMainWindow):
             self.output_path_line_edit.setText(file_name)
 
     def sql_checkbox_changed(self, state):
-        if state == 2:
-            self.keep_sql_file = True
-        else:
-            self.keep_sql_file = False
+        self.keep_sql_file = (state == 2)
 
     def generate_report(self):
         input_path_string = self.input_path_line_edit.text()

@@ -1,6 +1,5 @@
 import pandas as pd
 import sqlite3
-import sys
 
 from datetime import datetime
 from pathlib import Path
@@ -43,6 +42,13 @@ def generate_and_save_report(input_path: Path, output_path: Path, keep_sql_file:
     start_date, end_date = cursor.fetchall()[0]
     # Instantiates a Week object for the period covered in the database
     week: Week = Week(cursor, start_date, end_date)
+    # Checks if both the start date and the end date in the input file fall in the same week
+    if week.start_date.isocalendar()[:2] != week.end_date.isocalendar()[:2]:
+        close_db_connection(cursor, connection)
+        delete_sql_file(sql_output_path)
+        raise RuntimeError(
+            f"Inputfilen skal omfatte en periode på højst en uge, og både start- og slutdatoen skal ligge i samme uge."
+            f"\n\nDen valgte fil har startdato d. {week.start_date} og slutdato d. {week.end_date}.")
     # Generates a string containing the report in HTML format
     weekly_report: str = week.generate_report()
     # Saves the output file. Raises an exception if the file can't be written,
@@ -51,20 +57,24 @@ def generate_and_save_report(input_path: Path, output_path: Path, keep_sql_file:
         with open(output_path, "w", encoding="utf-8") as outfile:
             outfile.write(weekly_report)
     except PermissionError:
-        raise RuntimeError("Filen kan ikke skrives pga. manglede rettigheder.")
+        raise RuntimeError("Rapportfilen kan ikke skrives pga. manglede rettigheder.")
     except OSError as e:
-        raise RuntimeError(f"Filen kan ikke skrives:\n{e}")
+        raise RuntimeError(f"Rapportfilen kan ikke skrives:\n\n{e}")
     finally:
         if "cursor" in locals():
             close_db_connection(cursor, connection)
 
     if not keep_sql_file:
-        try:
-            sql_output_path.unlink()
-        except PermissionError:
-            display_popup("Fejl", "SQL-filen kan ikke slettes - mangler rettigheder.", "warning")
-        except Exception as e:
-            display_popup("Fejl", f"Der er opstået en fejl ved sletning af databasefilen:\n{e}", "warning")
+        delete_sql_file(sql_output_path)
+
+
+def delete_sql_file(sql_output_path: Path):
+    try:
+        sql_output_path.unlink()
+    except PermissionError:
+        display_popup("Fejl", "SQL-filen kan ikke slettes - mangler rettigheder.", "warning")
+    except Exception as e:
+        display_popup("Fejl", f"Der er opstået en fejl ved sletning af databasefilen:\n\n{e}", "warning")
 
 
 def create_dataframe(input_path: Path) -> pd.DataFrame:
@@ -111,7 +121,7 @@ def create_sqlite_db(sql_output_path: Path):
         create_db_table(cursor)
         return connection, cursor
     except (sqlite3.OperationalError, sqlite3.IntegrityError, sqlite3.DatabaseError) as e:
-        raise RuntimeError(f"Databasen kan ikke oprettes:\n{e}")
+        raise RuntimeError(f"Databasen kan ikke oprettes:\n\n{e}")
 
 
 def create_db_table(cursor: sqlite3.Cursor) -> None:
@@ -172,9 +182,9 @@ def load_data_into_db(cursor: sqlite3.Cursor, df: pd.DataFrame) -> None:
             sqlite3.OperationalError,
             sqlite3.IntegrityError,
             sqlite3.DatabaseError) as e:
-        raise RuntimeError(f"Der er opstået en fejl ved indlæsning af data:\n{e}")
+        raise RuntimeError(f"Der er opstået en fejl ved indlæsning af data:\n\n{e}")
     except Exception as e:
-        raise RuntimeError(f"Der er opstået en fejl:\n{e}")
+        raise RuntimeError(f"Der er opstået en fejl:\n\n{e}")
 
 
 def close_db_connection(cursor, connection):
