@@ -1,7 +1,7 @@
 import stylesheet
 from PyQt6.QtWidgets import QApplication
 from PyQt6.QtGui import QIcon
-from MainWIndowClass import MainWindow
+from MainWindowClass import MainWindow
 
 
 # ** GENERAL OVERVIEW **
