@@ -2,6 +2,10 @@ from OrderlineClass import Orderline
 
 
 class Item:
+    """
+    Describes a single item (furniture or cushion) and its most important attributes.
+    Used for building the "contents" view of a Kid in the report.
+    """
     def __init__(self,
                  item_number: str,
                  item_name: str,
@@ -16,14 +20,14 @@ class Item:
 class Kid:
     """
     Each object of this class contains information about a group of orders that share a delivery address and can be
-    packaged together.
+    packaged together. For all intents and purposes, a Kid can, in practical terms, be treated as an order.
     """
     BIG_ORDER: int = 30  # If an object of this class has orders for this many items, self.is_big will be set to True
 
     def __init__(self,
                  orderline_list: list[Orderline]
                  ) -> None:
-        # Since these values are shared between all orders making up a KID, those from element [0] are copied
+        # Since these values are shared between all orders making up a KID, those from element[0] are copied
         first_orderline: Orderline = orderline_list[0]
         self.address: str = first_orderline.address
         self.custname: str = first_orderline.custname
@@ -33,7 +37,7 @@ class Kid:
         self.postcode: str = first_orderline.postcode
         self.country: str = first_orderline.country
 
-        # These two are sets so the elements are unique
+        # These two properties are sets so the elements are unique
         self.dates: set = set()
         self.ordernumbers: set = set()
 
@@ -70,6 +74,6 @@ class Kid:
 
         self.is_big = (self.number_of_items >= self.BIG_ORDER)
 
-        # Converts the set to a list, so it can be sorted
+        # Converts the dates set to a list, so it can be sorted
         self.dates = list(self.dates)
         self.dates.sort()

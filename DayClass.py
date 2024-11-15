@@ -21,6 +21,12 @@ class Day:
         self._kids: list[Kid] = []
 
     def calculate_kids(self) -> None:
+        """
+        Groups orderlines by delivery address and instantiates a Kid object with those orderlines.
+        Adds the Kid objects to self._kids and sorts them by country.
+        Since the orderlines belonging to a Kid are originally stored in a set, their order (other than per-country
+        sorting) might be different each time a report is generated.
+        """
         for address in self.addresses:
             orderline_list: list[Orderline] = []
             for orderline in self.orderlines:
@@ -31,6 +37,11 @@ class Day:
         self.move_delayed_kids_to_beginning()
 
     def move_delayed_kids_to_beginning(self) -> None:
+        """
+        For Kid objects that are potentially delayed,
+        moves them to the beginning of the list to make sure they show up at the top of the day view
+        (that will always be the first day in the current range, typically Monday).
+        """
         for kid in self._kids:
             if kid.is_delayed:
                 kid_to_move: Kid = kid
@@ -55,8 +66,9 @@ class Day:
     
     @property
     def weekday(self) -> str:
+        """Translates the integer returned by the datetime objects' .weekday() method into a string in Danish."""
         weekdays = ["Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag", "Søndag"]
-        return weekdays[self.weekday_number % 7]
+        return weekdays[self.weekday_number]
     
     @property
     def orders_total(self) -> int:
@@ -109,7 +121,7 @@ class Day:
         return sum(kid.number_of_items for kid in self.kids if not kid.is_big)
 
     @property
-    def kids_in_pick_series(self) -> int:
+    def kids_in_pick_series_total(self) -> int:
         return sum(1 for kid in self.kids if kid.pickseries)
 
     @property
@@ -147,6 +159,7 @@ class Day:
         self._orderlines.remove(orderline)
 
     def get_day_report(self) -> str:
+        """Returns a string with the HTML code for the day view, to be added to the finished report."""
         day_report = Report.generate_day_head(self.weekday,
                                               self.date,
                                               self.items_total,
@@ -157,7 +170,7 @@ class Day:
                                               self.small_orders_total,
                                               self.big_orders_total,
                                               len(self.kids),
-                                              self.kids_in_pick_series,
+                                              self.kids_in_pick_series_total,
                                               self.dates,
                                               self.countries,
                                               self.all_ordernumbers,

@@ -1,6 +1,11 @@
 class Report:
+    """An essentially static class with methods that return different parts of the report in HTML format."""
     @staticmethod
     def generate_html_head() -> str:
+        """
+        Returns the first part of the HTML file, including the <head> section and the CSS.
+        Doesn't accept arguments and is the same for all reports.
+        """
         return ("""
 <!DOCTYPE html>
 <html lang="dk">
@@ -181,6 +186,7 @@ class Report:
 
     @staticmethod
     def generate_header(start_date, end_date) -> str:
+        """Returns the report header to display the date range covered by the report."""
         return (f"""
         <div class="header">
             <h1>Ugerapport for perioden {start_date.strftime("%d-%m-%Y")} - {end_date.strftime("%d-%m-%Y")}</h1>
@@ -205,6 +211,7 @@ class Report:
                               kids_with_pick_series,
                               hay_direct_kids_total,
                               potentially_delayed_orders_total) -> str:
+        """Returns the week summary section, with general overview of the week's orders."""
 
         return (f"""
         <div class="week-summary">
@@ -237,6 +244,7 @@ class Report:
                           hay_direct_kids,
                           big_kids,
                           small_orders_list) -> str:
+        """Returns the first part of the day overview section, with general information about the day."""
 
         hay_direct_orders = "<p><strong>Hay-Direct ordrer:</strong></p>" if hay_direct_kids else ""
         for kid in hay_direct_kids:
@@ -280,12 +288,6 @@ class Report:
         """)
 
     @staticmethod
-    def generate_day_tail() -> str:
-        return ("""
-        </div>
-        """)
-
-    @staticmethod
     def generate_kid(kid_number,
                      custname,
                      pick_series,
@@ -301,6 +303,8 @@ class Report:
                      is_hay_direct,
                      is_big,
                      all_items) -> str:
+        """Returns code for displaying data of single Kid."""
+
         ordre_dato_msg, ordre_msg = ("Ordren", "ordre") if orders_total == 1 else ("Ordrerne", "ordrer")
         vare_msg = "vare" if items_total == 1 else "varer"
 
@@ -353,7 +357,15 @@ class Report:
         """)
 
     @staticmethod
+    def generate_day_tail() -> str:
+        """Returns the closing tag for the Day section."""
+        return ("""
+        </div>
+        """)
+
+    @staticmethod
     def generate_html_tail() -> str:
+        """Returns the final part of the file, including the JS and the closing tags."""
         return ("""
     </div>
     <script>

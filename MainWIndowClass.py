@@ -97,6 +97,7 @@ class MainWindow(QMainWindow):
         self.keep_sql_file = (state == 2)
 
     def generate_report(self):
+        """Checks if the provided paths are valid, and if yes, runs the report generator thread."""
         input_path_string = self.input_path_line_edit.text()
         output_path_string = self.output_path_line_edit.text()
         try:
@@ -114,6 +115,8 @@ class MainWindow(QMainWindow):
             display_popup("Fejl", "Outputstien er ugyldig.", "warning")
             return
 
+        # Runs the report generating code in its own thread
+        # Displays a popup window depending on the kind of signal that the thread sends back (finished or error)
         self.thread = ReportGeneratorThread(input_path, output_path, self.keep_sql_file)
         self.thread.error.connect(self.show_error_popup)
         self.thread.finished.connect(self.show_finished_popup)

@@ -10,6 +10,7 @@ from popup_messagebox import display_popup
 
 
 class ReportGeneratorThread(QThread):
+    """A QThread wrapper for generate_and_save_report()"""
     finished = pyqtSignal()
     error = pyqtSignal(str)
 
@@ -20,6 +21,7 @@ class ReportGeneratorThread(QThread):
         self.keep_sql_file = keep_sql_file
 
     def run(self):
+        """Runs generate_and_save_report() and emits a signal depending on the result."""
         try:
             generate_and_save_report(self.input_path, self.output_path, self.keep_sql_file)
         except Exception as e:

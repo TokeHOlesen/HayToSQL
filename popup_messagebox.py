@@ -4,7 +4,7 @@ from PyQt6.QtGui import QIcon
 
 
 def display_popup(title: str, message: str, icon: str) -> None:
-    """Spawns a MessageBox with the given title and content."""
+    """Spawns a MessageBox with a given title, content and icon."""
     message_box = QMessageBox()
     message_box.setWindowTitle(title)
     message_box.setText(message)

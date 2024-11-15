@@ -7,6 +7,7 @@ from ReportClass import Report
 
 
 class Week:
+    # What day of the week orders to the given country may be packed. 0 = Monday.
     SHIPPING_DAYS = {
         "AT": (0, 1, 2, 3, 4),
         "BE": (0, 1, 2, 3, 4),
@@ -46,8 +47,14 @@ class Week:
                  start_date: str,
                  end_date: str) -> None:
         self._days: list[Day] = []
+        # Converts date strings into datetime objects
         self.start_date: datetime.date = datetime.strptime(start_date, r"%Y-%m-%d").date()
         self.end_date: datetime.date = datetime.strptime(end_date, r"%Y-%m-%d").date()
+        # For each day in the range covered by the input file, runs an SQL query to get data on all orderlines
+        # that must be packaged on the given day. The data is then used to instantiate Orderline objects, which
+        # are then added to a Day object, which then gets appended to self._days.
+        # Orders with the same delivery address are grouped together and added to the date when the address shows up
+        # first.
         for i in range((self.end_date - self.start_date).days + 1):
             day_date: datetime.date = (self.start_date + timedelta(days=i))
             day: Day = Day(day_date)
@@ -60,9 +67,11 @@ class Week:
                 day.add_line(Orderline(day_data_line))
                 day_data_line = cursor.fetchone()
             self.add_day(day)
+
         self.move_lines_to_match_date()
         self.calculate_kids_for_all_days()
 
+        # Builds a separate list for orderlines with DSV orders, since these must be handled manually
         self.dsv_orderlines: list[Orderline] = []
         cursor.execute("""SELECT * FROM hay WHERE location IS 'DSV';""")
         dsv_data_line: tuple = cursor.fetchone()
@@ -74,8 +83,8 @@ class Week:
         """
         If an orderline's date falls on a day on which orders to the orderline's country may not be shipped,
         moves the orderline back to the nearest allowed date.
-        If the orderline is moved all the way back to monday without reaching an allowed day, the orderline's
-        "is_delayed" property is set to True to mark is as delayed.
+        If the orderline is moved all the way back to the first day (typically monday) without reaching an allowed day,
+        the orderline's "is_delayed" property is set to True to flag it as potentially delayed.
         """
         for day in self._days:
             for country in day.countries:
@@ -169,13 +178,14 @@ class Week:
 
     @property
     def kids_with_pick_series(self) -> int:
-        return sum(day.kids_in_pick_series for day in self._days)
+        return sum(day.kids_in_pick_series_total for day in self._days)
 
     @property
     def potentially_delayed_orders_total(self) -> int:
         return sum(day.potentially_delayed_total for day in self._days)
 
     def generate_report(self) -> str:
+        """Generates the complete report in HTML format and returns it as a string."""
         weekly_report = Report.generate_html_head()
         weekly_report += Report.generate_header(self.start_date, self.end_date)
         weekly_report += Report.generate_week_summary(self.number_of_items,

@@ -1,3 +1,5 @@
+# Used to style the main window.
+
 stylesheet = """
         QLineEdit {
             border: 1px solid #AAAAAA;
