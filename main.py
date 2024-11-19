@@ -7,7 +7,7 @@ from MainWindowClass import MainWindow
 # ** GENERAL OVERVIEW **
 #
 # The code accepts an Excel file exported from NAV as input and generates an HTML file as output.
-# The Excel file is converted into a Pandas dataframe, which is then used as a data source for an SQLite database.
+# The Excel file is converted into a Pandas dataframe, which is then used as a data source for an SQLite3 database.
 # Data is read from the database and a string containing the report is generated.
 # Optionally, the file containing the database can be saved as well (same output path as the report).
 #
@@ -19,8 +19,8 @@ from MainWindowClass import MainWindow
 # will be assigned to. The logic respects the current rules laid out by Hay and DSV.
 #
 # Finally, orderlines with the same delivery address on a given day are grouped together and a Kid object is
-# instantiated. A Kid will, for practical purposes, present itself as an order and will appear as such for the
-# packers at the warehouse.
+# instantiated. A Kid will, for practical purposes, present itself as an order and will appear as such to the packers
+# at the warehouse.
 
 
 def main():
