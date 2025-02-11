@@ -2,6 +2,8 @@ import stylesheet
 from PyQt6.QtWidgets import QApplication
 from PyQt6.QtGui import QIcon
 from MainWindowClass import MainWindow
+import sys
+import os
 
 
 # ** GENERAL OVERVIEW **
@@ -27,7 +29,9 @@ def main():
     app = QApplication([])
     app.setStyleSheet(stylesheet.stylesheet)
     window = MainWindow()
-    window.setWindowIcon(QIcon("report-icon.ico"))
+    icon_file = "report_icon.ico"
+    icon_path = os.path.join(sys._MEIPASS, icon_file) if hasattr(sys, "_MEIPASS") else icon_file
+    window.setWindowIcon(QIcon(icon_path))
     window.show()
     app.exec()
 

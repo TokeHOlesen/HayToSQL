@@ -18,7 +18,7 @@ from popup_messagebox import display_popup
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Palissade Ugerapportgenerator")
+        self.setWindowTitle("Palissade Ugerapport Generator 1.0")
         self.setFixedSize(400, 140)
         screen = QGuiApplication.primaryScreen().geometry()
         center_pos_x = (screen.width() - self.width()) // 2

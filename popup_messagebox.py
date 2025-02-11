@@ -1,6 +1,8 @@
 from PyQt6.QtWidgets import QMessageBox
 from PyQt6.QtCore import QSize
 from PyQt6.QtGui import QIcon
+import os
+import sys
 
 
 def display_popup(title: str, message: str, icon: str) -> None:
@@ -8,7 +10,9 @@ def display_popup(title: str, message: str, icon: str) -> None:
     message_box = QMessageBox()
     message_box.setWindowTitle(title)
     message_box.setText(message)
-    message_box.setWindowIcon(QIcon("report-icon.ico"))
+    icon_file = "report_icon.ico"
+    icon_path = os.path.join(sys._MEIPASS, icon_file) if hasattr(sys, "_MEIPASS") else icon_file
+    message_box.setWindowIcon(QIcon(icon_path))
     ok_button = message_box.addButton(QMessageBox.StandardButton.Ok)
     ok_button.setFixedSize(QSize(80, 20))
     match icon:

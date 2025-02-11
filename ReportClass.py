@@ -272,7 +272,7 @@ class Report:
             <p><strong>Ca. ldm i alt:</strong> {round(ldm_total, 2)} ldm.</p>
             <p><strong>Ordrer i alt:</strong> {orders_total}.</p>
             <p><strong>Konsoliderede ordregrupper i alt:</strong> {kids_total} (store: {big_orders_total}, små: {small_orders_total}) - {kids_in_pick_series} er sat i pluk.</p>
-            <p><strong>Ordrene har følgende bekræftelsesdatoer:</strong> {', '.join([date.strftime("%d-%m-%Y") for date in dates])}.</p>
+            <p><strong>Ordrerne har følgende bekræftede leveringsdatoer:</strong> {', '.join([date.strftime("%d-%m-%Y") for date in dates])}.</p>
             <p><strong>Destinationer:</strong> {', '.join(destinations)}.</p>
             {hay_direct_orders}
             {big_orders}
