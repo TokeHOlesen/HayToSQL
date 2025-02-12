@@ -84,7 +84,8 @@ def create_dataframe(input_path: Path) -> pd.DataFrame:
         # noinspection PyTypeChecker
         df: pd.DataFrame = pd.read_excel(input_path, usecols=[
             "Plukserie (ordrelinje)",
-            "Varenummer", "Beskrivelse",
+            "Varenummer",
+            "Beskrivelse",
             "Antal3",
             "Beregnet ladmeter",
             "Bekræftet leveringsdato",
@@ -103,7 +104,23 @@ def create_dataframe(input_path: Path) -> pd.DataFrame:
     except pd.errors.EmptyDataError:
         raise RuntimeError("Excel-filen er tom eller indeholder ikke de nødvendige data.")
     except ValueError:
-        raise RuntimeError("Inputfilen er ikke en Excel-fil eller mangler de nødvendige data.")
+        raise RuntimeError("Inputfilen er ikke en Excel-fil eller mangler de nødvendige data.\n\n"
+                           "Følgende kolonner skal være inkluderet:\n"
+                           "Plukserie (ordrelinje)\n"
+                           "Varenummer\n"
+                           "Beskrivelse\n"
+                           "Antal3\n"
+                           "Beregnet ladmeter\n"
+                           "Bekræftet leveringsdato\n"
+                           "Leveringsnavn\n"
+                           "Leveringsadresse\n"
+                           "Leveringsby\n"
+                           "Leveringspostnr.\n"
+                           "Leveringsland\n"
+                           "Description 2\n"
+                           "Hay KO-no.\n"
+                           "Hay Lokation\n"
+                           "Konsoliderings ID")
     return df
 
 

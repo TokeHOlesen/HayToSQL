@@ -18,11 +18,11 @@ from popup_messagebox import display_popup
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Palissade Ugerapport Generator 1.0")
+        self.setWindowTitle("Palissade Ugerapport Generator 1.0.1")
         self.setFixedSize(400, 140)
         screen = QGuiApplication.primaryScreen().geometry()
         center_pos_x = (screen.width() - self.width()) // 2
-        center_pos_y = (screen.height() - self.height()) // 2
+        center_pos_y = (screen.height() - self.height()) // 3
         self.move(center_pos_x, center_pos_y)
         self.keep_sql_file: bool = False
 
