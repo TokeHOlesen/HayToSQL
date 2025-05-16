@@ -79,6 +79,15 @@ class Week:
             self.dsv_orderlines.append(Orderline(dsv_data_line))
             dsv_data_line = cursor.fetchone()
 
+        # Calculates how many items and how much ldm there is per day on DSV orders (furniture only)
+        self.dsv_number_by_day: list[int] = [0] * 7
+        self.dsv_ldm_by_day: list[float] = [0.0] * 7
+
+        for orderline in self.dsv_orderlines:
+            if "cushion" not in orderline.itemname.lower():
+                self.dsv_number_by_day[orderline.date.weekday()] += orderline.number_of_items
+                self.dsv_ldm_by_day[orderline.date.weekday()] += orderline.ldm
+
     def move_lines_to_match_date(self) -> None:
         """
         If an orderline's date falls on a day on which orders to the orderline's country may not be shipped,
@@ -201,6 +210,8 @@ class Week:
                                                       self.number_of_big_orders,
                                                       self.ldm_total,
                                                       self.dsv_ldm_total,
+                                                      self.dsv_number_by_day,
+                                                      self.dsv_ldm_by_day,
                                                       self.kids_total,
                                                       self.kids_with_pick_series,
                                                       self.hay_direct_kids_total,

@@ -41,7 +41,6 @@ class Report:
             margin: 10px auto;
             border: 2px solid lightblue;
             border-radius: 5px;
-            line-height: 0.8;
         }
         .day {
             margin-top: 20px;
@@ -50,7 +49,6 @@ class Report:
             padding: 0px 20px;
             padding-bottom: 20px;
             text-align: left;
-            line-height: 0.9;
             margin-bottom: 20px;
             background-color: #FFFFFF;
         }
@@ -207,18 +205,42 @@ class Report:
                               big_orders_total,
                               ldm_total,
                               dsv_ldm_total,
+                              dsv_number_by_day,
+                              dsv_ldm_by_day,
                               kids_total,
                               kids_with_pick_series,
                               hay_direct_kids_total,
                               potentially_delayed_orders_total) -> str:
         """Returns the week summary section, with general overview of the week's orders."""
 
+        # Generates the weekly overview and summary for DSV orders
+        if dsv_furniture_total > 0:
+            day_names = ["Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag", "Søndag"]
+            dsv_summary = """
+            <p class="summary"><strong>DSV møbler per dag:</strong>
+                <ul>
+            """
+            for i in range(7):
+                if dsv_number_by_day[i] > 0:
+                    dsv_summary += f"""
+                    <li>{day_names[i]}: {dsv_number_by_day[i]} stk, {dsv_ldm_by_day[i]:.1f} ldm.</li>
+                    """
+            dsv_summary += """
+                </ul>
+            </p>
+            """
+        else:
+            dsv_summary = """
+            <p class="summary"><strong>Ingen møbler til DSV.</strong></p>
+            """
+
         return (f"""
         <div class="week-summary">
-            <p class="summary"><strong>Varer i alt:</strong> {normal_items_total + dsv_items_total} stk (alm. ordrer: {normal_items_total} stk ({normal_items_in_big_orders} i store ordrer, {normal_items_in_small_orders} i små ordrer), DSV ordrer: {dsv_items_total} stk).</p>
+            <p class="summary"><strong>Varer i alt:</strong> {normal_items_total + dsv_items_total} stk (alm. ordrer: {normal_items_total} stk ({normal_items_in_big_orders} på store ordrer, {normal_items_in_small_orders} på små ordrer), DSV ordrer: {dsv_items_total} stk).</p>
             <p class="summary"><strong>Møbler i alt i alt:</strong> {normal_furniture_total + dsv_furniture_total} stk (alm. ordrer: {normal_furniture_total} stk, DSV ordrer: {dsv_furniture_total} stk).</p>
             <p class="summary"><strong>Hynder i alt:</strong> {normal_cushions_total + dsv_cushions_total} stk (alm. ordrer: {normal_cushions_total} stk, DSV ordrer: {dsv_cushions_total} stk).</p>
-            <p class="summary"><strong>Ca. lademeter i alt:</strong> {round(ldm_total + dsv_ldm_total, 2)} ldm (alm. ordrer: {ldm_total} ldm, DSV ordrer: {dsv_ldm_total} ldm).</p>
+            <p class="summary"><strong>Ca. lademeter i alt:</strong> {(ldm_total + dsv_ldm_total):.2f} ldm (alm. ordrer: {ldm_total} ldm, DSV ordrer: {dsv_ldm_total} ldm).</p>
+            {dsv_summary}
             <p class="summary"><strong>Almindelige ordrer i alt:</strong> {orders_total}.</p>
             <p class="summary"><strong>Konsoliderede ordregrupper i alt (almindelige ordrer):</strong> {kids_total} (store: {big_orders_total}, små: {small_orders_total}) - {kids_with_pick_series} er sat i pluk.</p>
             <p class="summary"><strong>Hay-Direct ordrer:</strong> {hay_direct_kids_total}.</p>
@@ -249,14 +271,14 @@ class Report:
         hay_direct_orders = "<p><strong>Hay-Direct ordrer:</strong></p>" if hay_direct_kids else ""
         for kid in hay_direct_kids:
             hay_direct_orders += f"""
-            <p class="big-order-box"><strong>{kid.custname} ({kid.number_of_items} stk, ca. {round(kid.ldm, 2)} ldm):</strong> {'|'.join(kid.ordernumbers)}</p>
+            <p class="big-order-box"><strong>{kid.country} - {kid.custname} ({kid.number_of_items} stk, ca. {round(kid.ldm, 2)} ldm):</strong> {' + '.join(kid.ordernumbers)}</p>
          """
 
         big_orders = "<p><strong>Store ordrer:</strong></p>" if big_kids and not big_kids == hay_direct_kids else ""
         for kid in big_kids:
             if kid not in hay_direct_kids:
                 big_orders += f"""
-            <p class="big-order-box"><strong>{kid.custname} ({kid.number_of_items} stk, ca. {round(kid.ldm, 2)} ldm):</strong> {'|'.join(kid.ordernumbers)}</p>
+            <p class="big-order-box"><strong>{kid.country} - {kid.custname} ({kid.number_of_items} stk, ca. {round(kid.ldm, 2)} ldm):</strong> {'|'.join(kid.ordernumbers)}</p>
         """
 
         small_orders = "<p><strong>Små ordrer:</strong></p>" if small_orders_list else ""
