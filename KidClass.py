@@ -17,6 +17,7 @@ class Item:
         self.number = number
 
 
+
 class Kid:
     """
     Each object of this class contains information about a group of orders that share a delivery address and can be
@@ -49,6 +50,24 @@ class Kid:
         self.is_hay_direct: bool = False
 
         self.all_items: list[Item] = []
+
+        self.i_orders = []
+        self.i_number_of_items = []
+        self.i_ldm = []
+        self.i_dates = []
+
+        for orderline in orderline_list:
+            for i in range(len(self.i_orders)):
+                if self.i_orders[i] == orderline.ordernumber:
+                    self.i_number_of_items[i] += orderline.number_of_items
+                    self.i_ldm[i] += orderline.ldm
+                    break
+            else:
+                self.i_orders.append(orderline.ordernumber)
+                self.i_number_of_items.append(orderline.number_of_items)
+                self.i_ldm.append(orderline.ldm)
+                self.i_dates.append(orderline.date)
+
 
         for orderline in orderline_list:
             self.dates.add(orderline.date)

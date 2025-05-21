@@ -176,6 +176,9 @@ class Report:
         .kid.show-order-contents .order_contents {
             display: block;
         }
+        .indented {
+            margin-left: 40px;
+        }
     </style>
 </head>
 <body>
@@ -218,21 +221,17 @@ class Report:
             day_names = ["Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag", "Søndag"]
             dsv_summary = """
             <p class="summary"><strong>DSV-møbler per dag:</strong>
-                <ul>
-            """
+                <ul>"""
             for i in range(7):
                 if dsv_number_by_day[i] > 0:
                     dsv_summary += f"""
-                    <li>{day_names[i]}: {dsv_number_by_day[i]} stk, {dsv_ldm_by_day[i]:.1f} ldm.</li>
-                    """
+                    <li>{day_names[i]}: {dsv_number_by_day[i]} stk, {dsv_ldm_by_day[i]:.1f} ldm.</li>"""
             dsv_summary += """
                 </ul>
-            </p>
-            """
+            </p>"""
         else:
             dsv_summary = """
-            <p class="summary"><strong>Ingen møbler til DSV.</strong></p>
-            """
+            <p class="summary"><strong>Ingen møbler til DSV.</strong></p>"""
 
         return (f"""
         <div class="week-summary">
@@ -278,8 +277,15 @@ class Report:
         for kid in big_kids:
             if kid not in hay_direct_kids:
                 big_orders += f"""
-            <p class="big-order-box"><strong>{kid.country} - {kid.custname} ({kid.number_of_items} stk, ca. {round(kid.ldm, 2)} ldm):</strong> {'|'.join(kid.ordernumbers)}</p>
-        """
+            <p class="big-order-box"><strong>{kid.country} - {kid.custname} ({kid.number_of_items} stk, ca. {round(kid.ldm, 2)} ldm):</strong> {'|'.join(kid.ordernumbers)}</p>"""
+                if len(kid.i_orders) > 1:
+                    big_orders += """
+                <ul class="indented">"""
+                    for i in range(len(kid.i_orders)):
+                        big_orders += f"""
+                    <li>{kid.i_orders[i]}: {kid.i_number_of_items[i]} stk., {kid.i_ldm[i]:.1f} ldm, bekr. til. d. {kid.i_dates[i].strftime('%d-%m-%Y')}</li>"""
+                    big_orders += """
+                </ul>"""
 
         small_orders = "<p><strong>Små ordrer:</strong></p>" if small_orders_list else ""
         small_orders += f"""
