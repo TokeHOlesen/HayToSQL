@@ -104,7 +104,7 @@ class Week:
                         while target_weekday not in self.SHIPPING_DAYS[country] and target_weekday > 0:
                             target_weekday -= 1
                         for orderline in day.orderlines[:]:
-                            if orderline.country == country:
+                            if orderline.country == country and not orderline.is_hay_direct:
                                 if target_weekday == 0 and target_weekday not in self.SHIPPING_DAYS[country]:
                                     orderline.is_delayed = True
                                 orderline.is_moved_back = True

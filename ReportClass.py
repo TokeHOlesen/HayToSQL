@@ -217,7 +217,7 @@ class Report:
         if dsv_furniture_total > 0:
             day_names = ["Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag", "Søndag"]
             dsv_summary = """
-            <p class="summary"><strong>DSV møbler per dag:</strong>
+            <p class="summary"><strong>DSV-møbler per dag:</strong>
                 <ul>
             """
             for i in range(7):
@@ -290,7 +290,7 @@ class Report:
             return (f"""
         <div class="day">
             <h2>{weekday} d. {date.strftime("%d-%m-%Y")}</h2>
-            <p><strong>Varer i alt:</strong> {items_total} (i store ordrer: {items_in_big_orders_total}, i små ordrer: {items_in_small_orders_total}).</p>
+            <p><strong>Varer i alt:</strong> {items_total} (på store ordrer: {items_in_big_orders_total}, på små ordrer: {items_in_small_orders_total}).</p>
             <p><strong>Ca. ldm i alt:</strong> {round(ldm_total, 2)} ldm.</p>
             <p><strong>Ordrer i alt:</strong> {orders_total}.</p>
             <p><strong>Konsoliderede ordregrupper i alt:</strong> {kids_total} (store: {big_orders_total}, små: {small_orders_total}) - {kids_in_pick_series} er sat i pluk.</p>
