@@ -166,6 +166,8 @@ class Day:
                                               self.items_in_small_orders_total,
                                               self.items_in_big_orders_total,
                                               self.ldm_total,
+                                              self.cushions_total,
+                                              self.furniture_total,
                                               self.orders_total,
                                               self.small_orders_total,
                                               self.big_orders_total,

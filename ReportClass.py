@@ -254,6 +254,8 @@ class Report:
                           items_in_small_orders_total,
                           items_in_big_orders_total,
                           ldm_total,
+                          cushions_total,
+                          furniture_total,
                           orders_total,
                           small_orders_total,
                           big_orders_total,
@@ -297,6 +299,8 @@ class Report:
         <div class="day">
             <h2>{weekday} d. {date.strftime("%d-%m-%Y")}</h2>
             <p><strong>Varer i alt:</strong> {items_total} (på store ordrer: {items_in_big_orders_total}, på små ordrer: {items_in_small_orders_total}).</p>
+            <p><strong>Møbler i alt:</strong> {furniture_total}.</p>
+            <p><strong>Hynder i alt:</strong> {cushions_total}.</p>
             <p><strong>Ca. ldm i alt:</strong> {round(ldm_total, 2)} ldm.</p>
             <p><strong>Ordrer i alt:</strong> {orders_total}.</p>
             <p><strong>Konsoliderede ordregrupper i alt:</strong> {kids_total} (store: {big_orders_total}, små: {small_orders_total}) - {kids_in_pick_series} er sat i pluk.</p>
